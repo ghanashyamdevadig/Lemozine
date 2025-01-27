@@ -1,0 +1,23 @@
+.car_container{
+    background-image: url("../../assets/images/bgImage/car.png");
+    height: 65vh; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    padding: 50px;
+    background-size: cover;
+}
+
+.title{
+    font-size: 50px;
+    color: black;
+    text-align: center;
+    margin-top: 50px;
+    font-weight: 500;
+}
+
+.search_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

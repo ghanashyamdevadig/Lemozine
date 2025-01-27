@@ -16,6 +16,12 @@ function Navbar() {
         <Link href="/about">
           About
         </Link>
+        <Link href="/about">
+          Services
+        </Link>
+        <Link href="/about">
+          Coontact Us
+        </Link>
       </div>
 
       <div className={styles.login}>
