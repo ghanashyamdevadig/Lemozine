@@ -1,144 +1,129 @@
 .navbar {
-    background-color: #2e4053;
-    padding: 5px 50px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
-    align-items: center;
-  }
+  background-color: #2e4053;
+  padding: 10px 50px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
 
-  .logoContainer{
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo {
-    margin-bottom: -10px;
-  }
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 
-  .logo p {
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-    margin-top: -5px;
-  }
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
 
+.logo p {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin-left: 10px;
+}
+
+.about {
+  display: flex;
+  gap: 30px;
+}
+
+.about a {
+  font-size: 16px;
+  color: white;
+  text-decoration: none;
+}
+
+.about a:hover {
+  text-decoration: underline;
+}
+
+.login {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.menuButton {
+  display: none;
+  cursor: pointer;
+}
+
+/* Mobile Drawer */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 250px;
+  height: 100vh;
+  background-color: #2e4053;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  transition: right 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.drawer.open {
+  right: 0;
+}
+
+.drawer a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 15px 0;
+  border-bottom: 1px solid gray;
+}
+
+.drawer a:hover {
+  text-decoration: underline;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  background: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.error {
+  color: red;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
   .about {
-    display: flex;
-    gap: 50px;
-  }
-  
-  .about a {
-    font-size: 16px;
-    color: white;
-    text-decoration: none;
-  }
-  
-  .about a:hover {
-    text-decoration: underline;
-  }
-  
-  .login {
-    /* background-color: white; */
-    color:white;
-    border: none;
-    /* padding: 0.5rem 1rem; */
-    /* border-radius: 20px; */
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
+    display: none;
   }
 
-  .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 350px;
-    background: white;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    text-align: center;
-  }
-  
-  .modal::backdrop {
-    background: rgba(0, 0, 0, 0.5);
-  }
-  
-  .modalContent {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .modalTitle {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: black;
-  }
-  
-  .modalForm {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-  
-  .input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .submitButton {
-    background-color: #28a745;
+  .navbar {
+    background-color: #2e4053;
+    padding: 5px 10px;
     color: white;
-    padding: 0.5rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .submitButton:hover {
-    background-color: #218838;
-  }
-  
-  .closeButton {
-    background-color: #dc3545;
-    color: white;
-    padding: 0.5rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .closeButton:hover {
-    background-color: #c82333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
   }
 
-  .error{
-    color: red;
+  .menuButton {
+    display: block;
   }
-  
-  @media (max-width: 768px) {
-    .about {
-      display: none;
-    }
-  
-    .navbar {
-      flex-direction: column;
-      text-align: center;
-    }
-  }
-  
+}

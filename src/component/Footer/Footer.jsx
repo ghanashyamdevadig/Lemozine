@@ -20,14 +20,9 @@ export default function Footer() {
         <a href="#">Contact Us</a>
       </nav>
 
+      {/* Legal Links */}
       <div className={styles.legal}>
-        <a href="#">Privacy Policy</a> | <a href="#">Terms and Conditions</a> | <a href="#">Our Partners</a>
-      </div>
-      <div className={styles.paymentIcons}>
-        <img src="/images/mastercard.png" alt="MasterCard" />
-        <img src="/images/visa.png" alt="Visa" />
-        <img src="/images/amex.png" alt="Amex" />
-        <img src="/images/discover.png" alt="Discover" />
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a> | <a href="#">Our Partners</a>
       </div>
 
       {/* Floating Buttons */}
