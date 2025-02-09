@@ -1,0 +1,98 @@
+.paymentPage {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  
+  .paymentHeader {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .paymentHeader h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .paymentSummaryCard {
+    padding: 15px;  /* Reduce padding to make the card smaller */
+    border-radius: 8px;
+  
+    box-shadow: 0px 4px 10px rgba(162, 156, 156, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+ 
+    align-self: center;
+    padding: 100px;
+    border-radius: 20px;
+  }
+  
+  .paymentSummaryCard img {
+    width: 100%;
+    height: auto;
+    max-width: 200px;  /* Set a max width for the image */
+    max-height: 150px;  /* Set a max height for the image */
+    object-fit: contain;
+    border-radius: 8px;
+    margin: 15px 0;
+  }
+  
+  
+  .paymentSummaryCard p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  /* Updated styles with local scoping for label */
+  .paymentForm {
+    margin-top: 20px;
+  }
+  
+  .formGroup {
+    margin-bottom: 20px;
+  }
+  
+  .formGroup label {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .formGroup input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .submitButtonContainer {
+    text-align: center;
+  }
+  
+  .submitBtn {
+    padding: 15px 30px;
+    background-color: #1a73e8;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submitBtn:hover {
+    background-color: #0c5bbf;
+  }
+  
+  .paymentStatus {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: green;
+  }
+  
