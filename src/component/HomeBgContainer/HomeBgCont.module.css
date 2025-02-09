@@ -5,15 +5,32 @@
     background-repeat: no-repeat;
     padding: 50px;
     background-size: cover;
+    opacity: 0;
+    animation: slideIn 1s ease-out forwards;
 }
 
 .title{
-    font-size: 50px;
-    color: black;
+    font-size: 36px;
+    color: #2e4053;
     text-align: center;
-    margin-top: 50px;
-    font-weight: 500;
+    margin-top: 70px;
+    font-weight: 700;
+    font-family: BODONI MODA;
+    /* opacity: 0;
+    animation: slideIn 1s ease-out forwards; */
 }
+
+@keyframes slideIn {
+    from {
+      transform: translateX(100vw);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
 
 .search_container{
     display: flex;

@@ -6,7 +6,7 @@ function HomeBgCont() {
   return (
     <div className={styles.main_container}>
       <div className={styles.title}>
-        PRIMIUM CAR FOR
+        PREMIUM CAR FOR
         <span> SERVICES</span>
       </div>
        <div className={styles.search_container}>

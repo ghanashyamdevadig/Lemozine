@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styles from './Navbar.module.css';
 import Link from 'next/link';
+import { UserOutlined } from '@ant-design/icons';
 
 function Navbar() {
   const modalRef = useRef(null);
@@ -75,12 +76,12 @@ function Navbar() {
           Services
         </Link>
         <Link href="/about">
-          Coontact Us
+          Contact Us
         </Link>
       </div>
 
       <div className={styles.login}>
-        <button onClick={openModal}>Login</button>
+        <div onClick={openModal}>Sign in <UserOutlined /></div>
       </div>
     </div>
     <dialog ref={modalRef} className={styles.modal} onClick={handleOutsideClick}>

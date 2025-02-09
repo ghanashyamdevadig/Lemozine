@@ -5,7 +5,7 @@
     padding: 20px;
     max-width: 900px;
     margin: 0 auto;
-    background: white;
+    background: #d5d8dc;
     border-radius: 16px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -19,7 +19,7 @@
     display: block;
     font-size: 14px;
     font-weight: 500;
-    color: #333;
+    color: #2e4053;
     margin-bottom: 8px;
   }
   
@@ -31,7 +31,7 @@
     font-size: 14px;
     outline: none;
     transition: border-color 0.2s;
-    color: grey;
+    color: rgb(63, 60, 60);
     background: none !important;
     margin-left: -10px;
   }
@@ -39,9 +39,13 @@
   .input:focus {
     border-color: none;
   }
+
+  .input::placeholder {
+    color: rgb(63, 60, 60);
+  }
   
   .searchButton {
-    background-color: #000;
+    background-color: #2e4053;
     color: #fff;
     border: none;
     padding: 10px 20px;
