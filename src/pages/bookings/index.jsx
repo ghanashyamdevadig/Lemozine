@@ -8,7 +8,6 @@ const CarSelectionPage = () => {
   const router = useRouter();
   const { query } = router;
 
-  // Car options now include additional details
   const carOptions = [
     {
       type: "Normal",
@@ -59,9 +58,20 @@ const CarSelectionPage = () => {
 
   const handleProceedToPayment = () => {
     if (selectedCar) {
+      const selectedCarOption = carOptions.find(
+        (car) => car.type === selectedCar
+      );
       router.push({
         pathname: "/payment",
-        query: { car: selectedCar, price: price },
+        query: {
+          car: selectedCar,
+          price: price,
+          imageUrl: selectedCarOption.imageUrl,
+          description: selectedCarOption.description,
+          maxPassengers: selectedCarOption.maxPassengers,
+          luggageSpace: selectedCarOption.luggageSpace,
+          features: selectedCarOption.features,
+        },
       });
     } else {
       alert("Please select a car type");
