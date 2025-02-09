@@ -16,7 +16,6 @@ export default function Footer() {
         <a href="#">Home</a>
         <a href="#">About Us</a>
         <a href="#">Our Services</a>
-        <a href="#">Our Fleet</a>
         <a href="#">Book a Ride</a>
         <a href="#">Contact Us</a>
       </nav>
