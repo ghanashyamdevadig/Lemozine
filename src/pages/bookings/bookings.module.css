@@ -1,0 +1,160 @@
+.carSelectionPage {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0 auto;
+    padding: 40px;
+    max-width: 1200px;
+  }
+  
+  .carSelectionHeader h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .carSelectionHeader p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: #555;
+  }
+  
+  .carOptions {
+    display: flex;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  
+  .carOption {
+    width: 320px; /* Adjusted width for each card */
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .carOption:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .carOptionSelected {
+    background-color: #e0f7fa;
+    border-color: #00bcd4;
+  }
+  
+  .carOptionCard {
+    display: flex;
+    flex-direction: column; /* Keeps image on top of details */
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .carImageContainer {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px; /* Space between image and details */
+  }
+  
+  .carImage {
+    width: 100%;
+    max-height: 250px; /* Prevents the image from being too large */
+    object-fit: cover; /* Ensures the image doesn't get stretched */
+    border-radius: 8px;
+  }
+  
+  .carDetailsContainer {
+    width: 100%;
+    text-align: left;
+    padding-left: 10px; /* Adds some padding for better text alignment */
+  }
+  
+  .carOptionCard h2 {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #333;
+  }
+  
+  .carOptionCard p {
+    font-size: 1.1rem;
+    color: #777;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  .carDetails {
+    font-size: 1rem;
+    margin-top: 15px;
+    color: #555;
+    padding-left: 5px; /* Adds subtle indentation for better hierarchy */
+  }
+  
+  .carDetails p {
+    margin-bottom: 8px;
+  }
+  
+  .carDetails p strong {
+    font-weight: bold;
+    color: #333; /* Darker color for the labels */
+  }
+  
+  .priceSummary {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .proceedBtn {
+    margin-top: 20px;
+    text-align: center; /* Centers the proceed button */
+  }
+  
+  .submitBtn {
+    background-color: #00bcd4;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submitBtn:hover {
+    background-color: #0097a7;
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .carOptions {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 100%;
+    }
+  
+    .carOption {
+      width: 100%; /* Ensure full width on smaller screens */
+      margin-bottom: 20px; /* Add space between cards on mobile */
+    }
+  
+    .carImage {
+      width: 90%; /* Slightly smaller image on mobile */
+    }
+  
+    .carDetailsContainer {
+      padding-left: 0;
+    }
+  
+    .submitBtn {
+      width: 100%; /* Full width button on mobile */
+      padding: 15px 0;
+    }
+  }
+  
