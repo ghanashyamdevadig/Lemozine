@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react';
 import styles from './Navbar.module.css';
 import Link from 'next/link';
 import { UserOutlined } from '@ant-design/icons';
+import logo from "../../assets/images/logo/logo-2.png"
+import Image from 'next/image';
 
 function Navbar() {
   const modalRef = useRef(null);
@@ -64,7 +66,10 @@ function Navbar() {
     <div className={styles.container}>
       <div className={styles.logo}>
         <Link href="/">
-          MyLogo
+       <div className={styles.logoContainer}>
+       <Image src={logo} width={70} height={70} />
+       <p>Mass Livery</p>
+       </div>
         </Link>
       </div>
 

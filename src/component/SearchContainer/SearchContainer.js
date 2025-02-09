@@ -5,18 +5,29 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 const SearchForm = () => {
-  const [location, setLocation] = useState("Dallas, Texas");
+  const [pickUplocation, setPickUpLocation] = useState("Dallas, Texas");
+  const [droplocation, setDropUpLocation] = useState("Dallas, Texas");
+
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
   return (
     <div className={styles.container}>
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Pick up & Return location</label>
+        <label className={styles.label}>Pick up location</label>
         <input
           type="text"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          value={pickUplocation}
+          onChange={(e) => setPickUpLocation(e.target.value)}
+          className={styles.input}
+        />
+      </div>
+      <div className={styles.inputGroup}>
+        <label className={styles.label}>Drop location</label>
+        <input
+          type="text"
+          value={droplocation}
+          onChange={(e) => setDropUpLocation(e.target.value)}
           className={styles.input}
         />
       </div>
