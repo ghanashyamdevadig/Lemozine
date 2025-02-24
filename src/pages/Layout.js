@@ -5,7 +5,9 @@ import React from 'react';
 const Layout = ({children}) => {
     return (
         <div>
+            <div style={{position: 'sticky', top: 0, zIndex: 1000}}>
             <Navbar/>
+            </div>
             <div>{children}</div>
             <Footer/>
         </div>

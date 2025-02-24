@@ -26,10 +26,10 @@ export default function Footer() {
       </div>
 
       {/* Floating Buttons */}
-      <div className={styles.floatingButtons}>
+      {/* <div className={styles.floatingButtons}>
         <div className={styles.floatingButton}><Phone size={20} /></div>
         <div className={styles.floatingButton}><ArrowUp size={20} /></div>
-      </div>
+      </div> */}
     </footer>
   );
 }

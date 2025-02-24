@@ -1,6 +1,9 @@
 import React from 'react';
 import styles from './HomeBgCont.module.css';
 import SearchForm from '../SearchContainer/SearchContainer';
+import OurServices from '../OurSevices/OurServices';
+import FleetSection from '../ourFleet/OurFleet';
+import ContactUs from '../ContactUs/ContactUs';
 
 function HomeBgCont() {
   return (
@@ -15,6 +18,9 @@ function HomeBgCont() {
     <div className={styles.car_container}>
 
     </div>
+    <OurServices id="services"/>
+    <FleetSection />
+    <ContactUs />
     </div>
   )
 }
