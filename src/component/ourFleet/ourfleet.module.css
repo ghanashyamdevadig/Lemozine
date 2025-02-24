@@ -1,0 +1,84 @@
+/* Fleet Section Container */
+.fleetContainer {
+    background-color: #fff;
+    color: #2e4053;
+    text-align: center;
+    padding: 60px 20px;
+  }
+  
+  /* Section Title */
+  .fleetTitle {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Line with Dots */
+  .fleetLineContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  
+  .fleetLine {
+    width: 80%;
+    height: 2px;
+    background-color: #2e4053;
+    position: absolute;
+  }
+  
+  .fleetDots {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    max-width: 500px;
+    position: relative;
+  }
+  
+  .fleetDot {
+    width: 12px;
+    height: 12px;
+    background-color: #2e4053;
+    border-radius: 50%;
+  }
+  
+  /* Fleet Items */
+  .fleetItems {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .fleetItem {
+    width: 300px;
+    text-align: center;
+  }
+  
+  .fleetItemTitle {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .fleetItemDescription {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .fleetItems {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .fleetDots {
+      width: 80%;
+    }
+  }
+  

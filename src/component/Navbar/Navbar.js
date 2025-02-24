@@ -1,14 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 import Link from 'next/link';
-import { UserOutlined } from '@ant-design/icons';
+import { CloseOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu, X } from 'lucide-react';
 import logo from "../../assets/images/logo/logo-2.png";
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 function Navbar() {
   const modalRef = useRef(null);
   const drawerRef = useRef(null);
+  const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -25,6 +27,15 @@ function Navbar() {
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
+  };
+
+  const handleScroll = (id) => {
+    router.push(`#${id}`, undefined, { shallow: true });
+
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   // Close drawer when clicking outside
@@ -49,7 +60,9 @@ function Navbar() {
   };
 
   const closeModal = () => {
-    modalRef.current.close();
+    if (modalRef.current) {
+      modalRef.current.close(); // Ensure the modal is closed
+    }
     setError('');
     setFormData({
       username: '',
@@ -58,6 +71,41 @@ function Navbar() {
       password: '',
       confirmPassword: ''
     });
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validateEmail(formData.email)) {
+      setError('Invalid email format!');
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match!');
+      return;
+    }
+    setError('');
+    alert('Form submitted successfully!');
+    closeModal();
+  };
+
+  const handleOutsideClick = (e) => {
+    if (e.target === modalRef.current) {
+      closeModal();
+    }
+  };
+
+  const handleCloseClick = (e) => {
+    e.stopPropagation(); // Prevents the click from bubbling up
+    closeModal();
   };
 
   return (
@@ -75,9 +123,9 @@ function Navbar() {
 
         {/* Desktop About Links */}
         <div className={styles.about}>
-          <Link href="/about">About</Link>
-          <Link href="/services">Services</Link>
-          <Link href="/contact">Contact Us</Link>
+        <div onClick={() => handleScroll("about")}  >About</div>
+      <div onClick={() => handleScroll("services")} >Services</div>
+      <div onClick={() => handleScroll("contact")} >Contact Us</div>
         </div>
 
         {/* Login Section */}
@@ -93,25 +141,25 @@ function Navbar() {
 
       {/* Mobile Drawer */}
       <div ref={drawerRef} className={`${styles.drawer} ${isDrawerOpen ? styles.open : ''}`}>
-        <Link href="/about" onClick={closeDrawer}>About</Link>
-        <Link href="/services" onClick={closeDrawer}>Services</Link>
-        <Link href="/contact" onClick={closeDrawer}>Contact Us</Link>
+      <div onClick={() => handleScroll("about")} >About</div>
+      <div onClick={() => handleScroll("services")}>Services</div>
+      <div onClick={() => handleScroll("contact")} >Contact Us</div>
       </div>
 
       {/* Login Modal */}
-      <dialog ref={modalRef} className={styles.modal}>
+      <dialog ref={modalRef} className={styles.modal} onClick={handleOutsideClick}>
         <div className={styles.modalContent}>
+        <div onClick={handleCloseClick} className={styles.close_modal}><CloseOutlined /></div>
           <h2 className={styles.modalTitle}>Login</h2>
-          <form className={styles.modalForm}>
-            <input type="text" name="username" placeholder="Username" className={styles.input} required value={formData.username} />
-            <input type="email" name="email" placeholder="Email" className={styles.input} required value={formData.email} />
-            <input type="tel" name="phone" placeholder="Phone Number" className={styles.input} required value={formData.phone} />
-            <input type="password" name="password" placeholder="Password" className={styles.input} required value={formData.password} />
-            <input type="password" name="confirmPassword" placeholder="Confirm Password" className={styles.input} required value={formData.confirmPassword} />
+          <form onSubmit={handleSubmit} className={styles.modalForm}>
+            <input type="text" name="username" placeholder="Username" className={styles.input} required value={formData.username} onChange={handleChange} />
+            <input type="email" name="email" placeholder="Email" className={styles.input} required value={formData.email} onChange={handleChange} />
+            <input type="tel" name="phone" placeholder="Phone Number" className={styles.input} required value={formData.phone} onChange={handleChange} />
+            <input type="password" name="password" placeholder="Password" className={styles.input} required value={formData.password} onChange={handleChange} />
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" className={styles.input} required value={formData.confirmPassword} onChange={handleChange} />
             {error && <p className={styles.error}>{error}</p>}
             <button type="submit" className={styles.submitButton}>Submit</button>
           </form>
-          <button onClick={closeModal} className={styles.closeButton}>Close</button>
         </div>
       </dialog>
     </nav>

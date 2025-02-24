@@ -1,0 +1,101 @@
+/* Order Ride Section */
+.orderRideContainer {
+    background-color: #fff;
+    color: #2e4053;
+    text-align: center;
+    padding: 20px 20px;
+  }
+  
+  /* Title & Subtitle */
+  .orderTitle {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .orderSubTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Form */
+  .orderForm {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  
+  /* Input Fields */
+  .inputGroup {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .inputField {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .inputField label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .inputField input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #d5d8dc;
+  }
+  
+  /* Text Area */
+  .textAreaField {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .textAreaField label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .textAreaField textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #d5d8dc;
+    resize: none;
+    height: 100px;
+  }
+  
+  /* Submit Button */
+  .submitButton {
+    background-color: #2e4053;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .submitButton:hover {
+    background-color: #2A2D25;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .inputGroup {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  
