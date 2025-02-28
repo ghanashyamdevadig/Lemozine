@@ -10,10 +10,10 @@ const SearchForm = () => {
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
+  
   return (
     <div className={styles.container}>
-      <div className={styles.inputGroup}>
+      <div className={styles.inputGroup}> 
         <label className={styles.label}>Pick up location</label>
         <input
           type="text"

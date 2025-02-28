@@ -4,6 +4,7 @@ import SearchForm from '../SearchContainer/SearchContainer';
 import OurServices from '../OurSevices/OurServices';
 import FleetSection from '../ourFleet/OurFleet';
 import ContactUs from '../ContactUs/ContactUs';
+import AboutUs from '../AboutUs/AboutUs';
 
 function HomeBgCont() {
   return (
@@ -18,6 +19,7 @@ function HomeBgCont() {
     <div className={styles.car_container}>
 
     </div>
+    <AboutUs id="about" />
     <OurServices id="services"/>
     <FleetSection />
     <ContactUs />
