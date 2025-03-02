@@ -6,7 +6,7 @@ import { Menu, X } from 'lucide-react';
 import logo from "../../assets/images/logo/logo-2.png";
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-
+import { addUser,getUser } from '@/config/firebase/firebaseConfig';
 function Navbar() {
   const modalRef = useRef(null);
   const drawerRef = useRef(null);
@@ -82,7 +82,7 @@ function Navbar() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateEmail(formData.email)) {
       setError('Invalid email format!');
@@ -94,6 +94,15 @@ function Navbar() {
     }
     setError('');
     alert('Form submitted successfully!');
+    console.log(formData,"formData")
+    let res= await addUser(formData)
+  
+  if(res?.success){
+    console.log(res,"formdate",res?.success,formData)
+    const user_res=await getUser(formData?.phone)
+    console.log(user_res)
+  }
+    console.log(res)
     closeModal();
   };
 

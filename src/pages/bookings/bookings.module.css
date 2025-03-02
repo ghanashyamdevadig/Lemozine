@@ -44,7 +44,7 @@
   
   .carOptionSelected {
     background-color: #e0f7fa;
-    border-color: #00bcd4;
+    border-color: #2E4053;
   }
   
   .carOptionCard {
@@ -116,7 +116,7 @@
   }
   
   .submitBtn {
-    background-color: #00bcd4;
+    background-color: #2E4053;
     color: white;
     padding: 12px 25px;
     border: none;
@@ -127,7 +127,7 @@
   }
   
   .submitBtn:hover {
-    background-color: #0097a7;
+    background-color: #2E4053;
   }
   
   /* Mobile Responsiveness */
