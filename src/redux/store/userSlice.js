@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   user: null,
-  car_prices:{}
+  car_prices: {},
+  booking_details:{}
 };
 
 const userSlice = createSlice({
@@ -15,11 +16,14 @@ const userSlice = createSlice({
     clearUser: (state) => {
       state.user = null;
     },
-    setCarPrices: (state,action) => {
-        state.car_prices =action.payload;
+    setCarPrices: (state, action) => {
+      state.car_prices = action.payload;
+    },
+    setBookingDetails: (state, action) => {
+        state.booking_details = action.payload;
       },
   },
 });
 
-export const { setUser, clearUser,setCarPrices } = userSlice.actions;
+export const { setUser, clearUser, setCarPrices,setBookingDetails } = userSlice.actions;
 export default userSlice.reducer;

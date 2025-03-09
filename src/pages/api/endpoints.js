@@ -8,9 +8,8 @@ const endpoints = {
     details: (userId) => `/users/${userId}`,
     calculateprice:(distance)=> `/booking/calculatePrice?distance=${distance}`,
   },
-  posts: {
-    list: "/posts",
-    details: (postId) => `/posts/${postId}`,
+  bookings: {
+    booking: "/booking",
   },
 };
 

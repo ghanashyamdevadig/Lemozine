@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import apiService from "@/pages/api/apiService";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
-import { setCarPrices } from "@/redux/store/userSlice";
+import { setCarPrices ,setBookingDetails} from "@/redux/store/userSlice";
 
 // Mock location data for autocomplete
 const locationOptions = [
@@ -18,7 +18,7 @@ const locationOptions = [
 
 // Mock function to calculate distance & price
 const mockDistanceMatrixAPI = (from, to) => {
-  if (!from || !to || from === to) return { distance: 0, price: 0 };
+  if (!from || !to || from === to) return { distance: Math.random()*100, price: 0 };
 
   const distance = Math.random() * 50 + 10; // Random distance between 10-60 km
   const price = distance * 5; // Assume $5 per km
@@ -51,9 +51,9 @@ const SearchForm = ({ navigation }) => {
       distance,
       price,
     };
-
+    dispatch(setBookingDetails(searchResult))
     let res = await calculateCarPrice(distance);
-    console.log(res, "res for handleSerach");
+    console.log(res, searchResult,"res for handleSerach");
    
     // navigate.push("/bookings", { data: searchResult });
     // alert(JSON.stringify(searchResult, null, 2));
