@@ -12,6 +12,7 @@
     "@ant-design/icons": "^5.6.1",
     "@next/font": "^14.2.15",
     "antd": "^5.23.3",
+    "axios": "^1.8.2",
     "date-fns": "^4.1.0",
     "firebase": "^11.4.0",
     "lucide-react": "^0.475.0",
