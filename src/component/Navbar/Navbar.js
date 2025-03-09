@@ -22,6 +22,12 @@ function Navbar() {
     password: "",
     confirmPassword: "",
   });
+
+  const [formDataLogin, setFormDataLogin] = useState({
+    email: "",
+    password: "",
+  });
+  const [errorLogin, setErrorLogin] = useState("");
   const [error, setError] = useState("");
 
   const toggleDrawer = () => {
@@ -113,6 +119,29 @@ function Navbar() {
     closeModal();
   };
 
+  const handleChangeLogin = (e) => {
+    setFormDataLogin({ ...formDataLogin, [e.target.name]: e.target.value });
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateEmail(formDataLogin.email)) {
+      setErrorLogin("Invalid email format!");
+      return;
+    }
+    setErrorLogin("");
+
+    try {
+      const response = await apiService.auth.login(formDataLogin);
+      console.log("Login Successful:", response.data);
+      alert("Login successful!");
+      closeModal();
+    } catch (error) {
+      console.error("Login failed:", error);
+      setErrorLogin("Invalid credentials!");
+    }
+  };
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
@@ -136,7 +165,7 @@ function Navbar() {
         {/* Login Section */}
         <div className={styles.login}>
           <div onClick={openModal}>
-            Sign in <UserOutlined />
+            Login <UserOutlined />
           </div>
         </div>
 
@@ -166,58 +195,94 @@ function Navbar() {
           <div onClick={handleCloseClick} className={styles.close_modal}>
             <CloseOutlined />
           </div>
-          <h2 className={styles.modalTitle}>Login</h2>
-          <form onSubmit={handleSubmit} className={styles.modalForm}>
-            <input
-              type="text"
-              name="name"
-              placeholder="name"
-              className={styles.input}
-              required
-              value={formData.name}
-              onChange={handleChange}
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className={styles.input}
-              required
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              className={styles.input}
-              required
-              value={formData.phone}
-              onChange={handleChange}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className={styles.input}
-              required
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              className={styles.input}
-              required
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
-            {error && <p className={styles.error}>{error}</p>}
-            <button type="submit" className={styles.submitButton}>
-              Submit
-            </button>
-          </form>
+          {/* <>
+            <h2 className={styles.modalTitle}>Sign Up</h2>
+            <form onSubmit={handleSubmit} className={styles.modalForm}>
+              <input
+                type="text"
+                name="name"
+                placeholder="name"
+                className={styles.input}
+                required
+                value={formData.name}
+                onChange={handleChange}
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                className={styles.input}
+                required
+                value={formData.email}
+                onChange={handleChange}
+              />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                className={styles.input}
+                required
+                value={formData.phone}
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                className={styles.input}
+                required
+                value={formData.password}
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                className={styles.input}
+                required
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+              {error && <p className={styles.error}>{error}</p>}
+              <button type="submit" className={styles.submitButton}>
+                Sign Up
+              </button>
+            </form>
+          </> */}
+          <>
+            <h2 className={styles.modalTitle}>Login</h2>
+            <form onSubmit={handleLoginSubmit} className={styles.modalForm}>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                className={styles.input}
+                required
+                value={formDataLogin.email}
+                onChange={handleChangeLogin}
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                className={styles.input}
+                required
+                value={formDataLogin.password}
+                onChange={handleChangeLogin}
+              />
+              {errorLogin && <p className={styles.error}>{errorLogin}</p>}
+              <button type="submit" className={styles.submitButton}>
+                Login
+              </button>
+              <p className={styles.signupText}>
+                Don't have an account?
+                <span className={styles.signupLink}>
+                  {" "}
+                  Sign Up
+                </span>
+              </p>
+            </form>
+          </>
         </div>
       </dialog>
     </nav>
