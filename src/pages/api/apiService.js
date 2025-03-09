@@ -9,6 +9,7 @@ const apiService = {
   users: {
     getAll: () => apiClient.get(endpoints.users.list),
     getById: (userId) => apiClient.get(endpoints.users.details(userId)),
+    getCarDetails: (distance) => apiClient.get(endpoints.users.calculateprice(distance)),
   },
   posts: {
     getAll: () => apiClient.get(endpoints.posts.list),

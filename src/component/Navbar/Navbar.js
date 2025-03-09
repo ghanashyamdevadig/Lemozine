@@ -3,18 +3,21 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
 import Link from "next/link";
-import { CloseOutlined, UserOutlined } from "@ant-design/icons";
+import { CloseOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Menu, X } from "lucide-react";
 import logo from "../../assets/images/logo/logo-2.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import apiService from "../../pages/api/apiService";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser, clearUser } from "@/redux/store/userSlice";
 
 function Navbar() {
   const modalRef = useRef(null);
   const drawerRef = useRef(null);
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isLogin, setIsLoginIn] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,6 +32,9 @@ function Navbar() {
   });
   const [errorLogin, setErrorLogin] = useState("");
   const [error, setError] = useState("");
+
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -106,6 +112,7 @@ function Navbar() {
     console.log(formData, "formData");
     const response = await apiService.auth.signup(formData);
     console.log("Registration Successful:", response.data);
+    setIsLoginIn(!isLogin);
   };
 
   const handleOutsideClick = (e) => {
@@ -133,8 +140,11 @@ function Navbar() {
 
     try {
       const response = await apiService.auth.login(formDataLogin);
-      console.log("Login Successful:", response.data);
-      alert("Login successful!");
+      console.log("Login Successful:", response.data,response.data.token);
+      dispatch(setUser(response.data));
+     if(response.data.token){
+      localStorage.setItem('authToken',response.data.token)
+     }
       closeModal();
     } catch (error) {
       console.error("Login failed:", error);
@@ -165,7 +175,18 @@ function Navbar() {
         {/* Login Section */}
         <div className={styles.login}>
           <div onClick={openModal}>
-            Login <UserOutlined />
+            {user ? user.name : "Login"}{" "}
+            {user ? (
+              <button
+                onClick={() => {
+                  dispatch(clearUser());
+                }}
+              >
+                <LogoutOutlined />
+              </button>
+            ) : (
+              <UserOutlined />
+            )}
           </div>
         </div>
 
@@ -195,94 +216,111 @@ function Navbar() {
           <div onClick={handleCloseClick} className={styles.close_modal}>
             <CloseOutlined />
           </div>
-          {/* <>
-            <h2 className={styles.modalTitle}>Sign Up</h2>
-            <form onSubmit={handleSubmit} className={styles.modalForm}>
-              <input
-                type="text"
-                name="name"
-                placeholder="name"
-                className={styles.input}
-                required
-                value={formData.name}
-                onChange={handleChange}
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                className={styles.input}
-                required
-                value={formData.email}
-                onChange={handleChange}
-              />
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone Number"
-                className={styles.input}
-                required
-                value={formData.phone}
-                onChange={handleChange}
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                className={styles.input}
-                required
-                value={formData.password}
-                onChange={handleChange}
-              />
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                className={styles.input}
-                required
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-              {error && <p className={styles.error}>{error}</p>}
-              <button type="submit" className={styles.submitButton}>
-                Sign Up
-              </button>
-            </form>
-          </> */}
-          <>
-            <h2 className={styles.modalTitle}>Login</h2>
-            <form onSubmit={handleLoginSubmit} className={styles.modalForm}>
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                className={styles.input}
-                required
-                value={formDataLogin.email}
-                onChange={handleChangeLogin}
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                className={styles.input}
-                required
-                value={formDataLogin.password}
-                onChange={handleChangeLogin}
-              />
-              {errorLogin && <p className={styles.error}>{errorLogin}</p>}
-              <button type="submit" className={styles.submitButton}>
-                Login
-              </button>
-              <p className={styles.signupText}>
-                Don't have an account?
-                <span className={styles.signupLink}>
-                  {" "}
+
+          {isLogin ? (
+            <div>
+              <h2 className={styles.modalTitle}>Sign Up</h2>
+              <form onSubmit={handleSubmit} className={styles.modalForm}>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="name"
+                  className={styles.input}
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  className={styles.input}
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone Number"
+                  className={styles.input}
+                  required
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  className={styles.input}
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  className={styles.input}
+                  required
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+                {error && <p className={styles.error}>{error}</p>}
+                <button type="submit" className={styles.submitButton}>
                   Sign Up
+                </button>
+                <span
+                  className={styles.signupLink}
+                  onClick={() => {
+                    setIsLoginIn(!isLogin);
+                  }}
+                >
+                  Log In
                 </span>
-              </p>
-            </form>
-          </>
+              </form>
+            </div>
+          ) : (
+            <div>
+              <h2 className={styles.modalTitle}>Login</h2>
+              <form onSubmit={handleLoginSubmit} className={styles.modalForm}>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  className={styles.input}
+                  required
+                  value={formDataLogin.email}
+                  onChange={handleChangeLogin}
+                />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  className={styles.input}
+                  required
+                  value={formDataLogin.password}
+                  onChange={handleChangeLogin}
+                />
+                {errorLogin && <p className={styles.error}>{errorLogin}</p>}
+                <button type="submit" className={styles.submitButton}>
+                  Login
+                </button>
+                <p className={styles.signupText}>
+                  Don't have an account?
+                  <span
+                    className={styles.signupLink}
+                    onClick={() => {
+                      setIsLoginIn(!isLogin);
+                    }}
+                  >
+                    {" "}
+                    Sign Up
+                  </span>
+                </p>
+              </form>
+            </div>
+          )}
         </div>
       </dialog>
     </nav>

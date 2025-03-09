@@ -1,37 +1,42 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import styles from "./bookings.module.css";
+import { useSelector } from "react-redux";
 
 const CarSelectionPage = () => {
   const [selectedCar, setSelectedCar] = useState(null);
   const [price, setPrice] = useState(null);
   const router = useRouter();
   const { query } = router;
+  const user = useSelector((state) => state.user?.car_prices);
 
   const carOptions = [
     {
       type: "Normal",
-      basePrice: 10,
+      basePrice: user?.data[`Normal`],
       description: "Comfortable and affordable ride.",
-      imageUrl: "https://imgd.aeplcdn.com/664x374/n/cw/ec/131249/eqs-exterior-right-front-three-quarter-6.jpeg?isig=0&q=80",
+      imageUrl:
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/131249/eqs-exterior-right-front-three-quarter-6.jpeg?isig=0&q=80",
       features: "AC, Bluetooth, GPS, Comfortable Seating",
       maxPassengers: 4,
       luggageSpace: "2 Large Bags",
     },
     {
       type: "Premium",
-      basePrice: 20,
+      basePrice: user?.data[`Premium`],
       description: "Luxurious experience for your journey.",
-      imageUrl: "https://imgd.aeplcdn.com/664x374/n/cw/ec/169989/macan-turbo-ev-exterior-right-front-three-quarter.jpeg?isig=0&q=80",
+      imageUrl:
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/169989/macan-turbo-ev-exterior-right-front-three-quarter.jpeg?isig=0&q=80",
       features: "Leather Seats, Premium Sound System, Sunroof",
       maxPassengers: 4,
       luggageSpace: "3 Large Bags",
     },
     {
       type: "VIP",
-      basePrice: 30,
+      basePrice: user?.data[`VIP`],
       description: "Exclusive, first-class service.",
-      imageUrl: "https://imgd.aeplcdn.com/664x374/n/cw/ec/132513/7-series-exterior-right-front-three-quarter-3.jpeg?isig=0&q=80",
+      imageUrl:
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/132513/7-series-exterior-right-front-three-quarter-3.jpeg?isig=0&q=80",
       features: "Massage Seats, Private Driver, Executive Lounge",
       maxPassengers: 4,
       luggageSpace: "4 Large Bags",
@@ -52,6 +57,7 @@ const CarSelectionPage = () => {
   };
 
   const handleCarSelect = (carType) => {
+    console.log(user?.data);
     setSelectedCar(carType);
     calculatePrice(carType);
   };
@@ -81,7 +87,7 @@ const CarSelectionPage = () => {
   return (
     <div className={styles.carSelectionPage}>
       <section className={styles.carSelectionHeader}>
-        <h1>Select Your Car</h1>
+        <h1>Select Your Ca{JSON.stringify(user.car_prices)}r</h1>
         <p>Choose the car type that suits your needs</p>
       </section>
 
@@ -106,10 +112,19 @@ const CarSelectionPage = () => {
                 <h2>{carOption.type}</h2>
                 <p>{carOption.description}</p>
                 <div className={styles.carDetails}>
-                  <p><strong>Max Passengers:</strong> {carOption.maxPassengers}</p>
-                  <p><strong>Luggage Space:</strong> {carOption.luggageSpace}</p>
-                  <p><strong>Features:</strong> {carOption.features}</p>
-                  <p><strong>Price per Unit Distance:</strong> ${carOption.basePrice}</p>
+                  <p>
+                    <strong>Max Passengers:</strong> {carOption.maxPassengers}
+                  </p>
+                  <p>
+                    <strong>Luggage Space:</strong> {carOption.luggageSpace}
+                  </p>
+                  <p>
+                    <strong>Features:</strong> {carOption.features}
+                  </p>
+                  <p>
+                    <strong>Price per Unit Distance:</strong> $
+                    {carOption.basePrice}
+                  </p>
                 </div>
               </div>
             </div>

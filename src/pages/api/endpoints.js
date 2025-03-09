@@ -6,6 +6,7 @@ const endpoints = {
   users: {
     list: "/users",
     details: (userId) => `/users/${userId}`,
+    calculateprice:(distance)=> `/booking/calculatePrice?distance=${distance}`,
   },
   posts: {
     list: "/posts",
