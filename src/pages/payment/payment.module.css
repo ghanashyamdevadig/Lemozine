@@ -46,6 +46,29 @@
   align-items: center;
 }
 
+.cardElementContainer {
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  padding: 12px;
+  background-color: white;
+}
+
+.errorMessage {
+  color: #e25950;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.formRow {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.formRow .formGroup {
+  flex: 1;
+}
+
 .carImageContainer {
   grid-column: 1;
   display: flex;

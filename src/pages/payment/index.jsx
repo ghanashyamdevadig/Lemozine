@@ -1,7 +1,254 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  CardElement,
+  Elements,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 import styles from "./payment.module.css";
 
+// Initialize Stripe with your publishable key
+// Replace with your actual publishable key
+const stripePromise = loadStripe("pk_test_YourStripePublishableKey");
+
+// Payment form component
+const CheckoutForm = ({ price, car, onPaymentStatus }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const router = useRouter();
+  
+  const [billingDetails, setBillingDetails] = useState({
+    name: "",
+    email: "",
+    address: {
+      line1: "",
+      city: "",
+      state: "",
+      postal_code: "",
+    },
+  });
+  const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState(null);
+  const [succeeded, setSucceeded] = useState(false);
+  const [clientSecret, setClientSecret] = useState("");
+
+  // Create payment intent on component mount
+  useEffect(() => {
+    // Call your backend to create a PaymentIntent
+    fetch("/api/create-payment-intent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        amount: parseFloat(price) * 100, // Convert to cents
+        currency: "usd",
+        description: `Car Rental: ${car}`
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setClientSecret(data.clientSecret);
+      })
+      .catch((err) => {
+        setError("Failed to initialize payment. Please try again.");
+        console.error("Error creating payment intent:", err);
+      });
+  }, [price, car]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not loaded yet
+      return;
+    }
+
+    // Validate form
+    if (!billingDetails.name || !billingDetails.email) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    setProcessing(true);
+    onPaymentStatus("Processing payment...", true);
+
+    // Confirm card payment
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: billingDetails,
+      },
+    });
+
+    if (payload.error) {
+      setError(`Payment failed: ${payload.error.message}`);
+      onPaymentStatus(`Payment failed: ${payload.error.message}`, false);
+      setProcessing(false);
+    } else {
+      setError(null);
+      setSucceeded(true);
+      onPaymentStatus("Payment successful! Redirecting to confirmation page...", false);
+      
+      // Redirect to confirmation page after successful payment
+      setTimeout(() => {
+        router.push({
+          pathname: "/booking-confirmation",
+          query: {
+            paymentId: payload.paymentIntent.id,
+            car,
+          },
+        });
+      }, 2000);
+    }
+  };
+
+  return (
+    <form className={styles.paymentForm} onSubmit={handleSubmit}>
+      <h2 className={styles.formTitle}>Payment Information</h2>
+      
+      <div className={styles.formGroup}>
+        <label htmlFor="name">Full Name</label>
+        <input
+          id="name"
+          type="text"
+          placeholder="John Smith"
+          required
+          value={billingDetails.name}
+          onChange={(e) => {
+            setBillingDetails({ ...billingDetails, name: e.target.value });
+          }}
+        />
+      </div>
+      
+      <div className={styles.formGroup}>
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="email@example.com"
+          required
+          value={billingDetails.email}
+          onChange={(e) => {
+            setBillingDetails({ ...billingDetails, email: e.target.value });
+          }}
+        />
+      </div>
+      
+      <div className={styles.formGroup}>
+        <label htmlFor="address">Address</label>
+        <input
+          id="address"
+          type="text"
+          placeholder="123 Main St"
+          required
+          value={billingDetails.address.line1}
+          onChange={(e) => {
+            setBillingDetails({
+              ...billingDetails,
+              address: { ...billingDetails.address, line1: e.target.value },
+            });
+          }}
+        />
+      </div>
+      
+      <div className={styles.formRow}>
+        <div className={styles.formGroup}>
+          <label htmlFor="city">City</label>
+          <input
+            id="city"
+            type="text"
+            placeholder="San Francisco"
+            required
+            value={billingDetails.address.city}
+            onChange={(e) => {
+              setBillingDetails({
+                ...billingDetails,
+                address: { ...billingDetails.address, city: e.target.value },
+              });
+            }}
+          />
+        </div>
+        
+        <div className={styles.formGroup}>
+          <label htmlFor="state">State</label>
+          <input
+            id="state"
+            type="text"
+            placeholder="CA"
+            required
+            value={billingDetails.address.state}
+            onChange={(e) => {
+              setBillingDetails({
+                ...billingDetails,
+                address: { ...billingDetails.address, state: e.target.value },
+              });
+            }}
+          />
+        </div>
+        
+        <div className={styles.formGroup}>
+          <label htmlFor="zip">ZIP</label>
+          <input
+            id="zip"
+            type="text"
+            placeholder="94103"
+            required
+            value={billingDetails.address.postal_code}
+            onChange={(e) => {
+              setBillingDetails({
+                ...billingDetails,
+                address: { 
+                  ...billingDetails.address, 
+                  postal_code: e.target.value.replace(/[^0-9]/g, '')
+                },
+              });
+            }}
+          />
+        </div>
+      </div>
+      
+      <div className={styles.formGroup}>
+        <label htmlFor="card">Credit Card</label>
+        <div className={styles.cardElementContainer}>
+          <CardElement
+            id="card"
+            options={{
+              style: {
+                base: {
+                  fontSize: "16px",
+                  color: "#424770",
+                  "::placeholder": {
+                    color: "#aab7c4",
+                  },
+                },
+                invalid: {
+                  color: "#9e2146",
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
+      
+      {error && <div className={styles.errorMessage}>{error}</div>}
+      
+      <div className={styles.submitButtonContainer}>
+        <button
+          type="submit"
+          className={styles.submitBtn}
+          disabled={processing || !stripe || !clientSecret}
+        >
+          {processing ? 'Processing...' : `Pay $${parseFloat(price).toFixed(2)}`}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+// Main component
 const PaymentPage = () => {
   const router = useRouter();
   const {
@@ -14,72 +261,13 @@ const PaymentPage = () => {
     features,
   } = router.query;
 
-  const [paymentDetails, setPaymentDetails] = useState({
-    cardNumber: "",
-    expirationDate: "",
-    cvv: "",
-    cardholderName: "",
-  });
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [processing, setProcessing] = useState(false);
 
-  // Format card number with spaces
-  const formatCardNumber = (value) => {
-    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    const matches = v.match(/\d{4,16}/g);
-    const match = matches && matches[0] || '';
-    const parts = [];
-    
-    for (let i = 0, len = match.length; i < len; i += 4) {
-      parts.push(match.substring(i, i + 4));
-    }
-    
-    if (parts.length) {
-      return parts.join(' ');
-    } else {
-      return value;
-    }
-  };
-
-  // Handle payment form submission
-  const handlePaymentSubmit = (e) => {
-    e.preventDefault();
-
-    // Simple validation for payment details
-    if (
-      !paymentDetails.cardNumber ||
-      !paymentDetails.expirationDate ||
-      !paymentDetails.cvv ||
-      !paymentDetails.cardholderName
-    ) {
-      alert("Please fill in all payment details.");
-      return;
-    }
-
-    // Simulating the payment process
-    setProcessing(true);
-    setPaymentStatus("Processing payment...");
-
-    // Simulate payment success
-    setTimeout(() => {
-      setProcessing(false);
-      setPaymentStatus("Payment successful! Redirecting to confirmation page...");
-      setTimeout(() => {
-        router.push("/booking-confirmation"); // Redirect to confirmation page
-      }, 2000);
-    }, 2500);
-  };
-
-  // Detect card type based on first digits
-  const getCardType = () => {
-    const number = paymentDetails.cardNumber.replace(/\s+/g, '');
-    
-    if (/^4/.test(number)) return "Visa";
-    if (/^5[1-5]/.test(number)) return "Mastercard";
-    if (/^3[47]/.test(number)) return "American Express";
-    if (/^6(?:011|5)/.test(number)) return "Discover";
-    
-    return null;
+  // Handle payment status updates
+  const handlePaymentStatus = (message, isProcessing) => {
+    setPaymentStatus(message);
+    setProcessing(isProcessing);
   };
 
   // Format price for display
@@ -133,96 +321,14 @@ const PaymentPage = () => {
         </div>
       </section>
 
-      {/* Payment Form */}
-      <form className={styles.paymentForm} onSubmit={handlePaymentSubmit}>
-        <h2 className={styles.formTitle}>Payment Information</h2>
-        
-        <div className={styles.formGroup}>
-          <label htmlFor="cardholderName">Cardholder Name</label>
-          <input
-            type="text"
-            id="cardholderName"
-            placeholder="As it appears on your card"
-            value={paymentDetails.cardholderName}
-            onChange={(e) =>
-              setPaymentDetails({
-                ...paymentDetails,
-                cardholderName: e.target.value,
-              })
-            }
-            required
-          />
-        </div>
-
-        <div className={styles.formGroup + ' ' + styles.cardNumberGroup}>
-          <label htmlFor="cardNumber">Card Number</label>
-          <input
-            type="text"
-            id="cardNumber"
-            placeholder="1234 5678 9012 3456"
-            value={paymentDetails.cardNumber}
-            onChange={(e) =>
-              setPaymentDetails({
-                ...paymentDetails,
-                cardNumber: formatCardNumber(e.target.value),
-              })
-            }
-            maxLength="19"
-            required
-          />
-          {getCardType() && (
-            <div className={styles.cardIcon}>{getCardType()}</div>
-          )}
-        </div>
-
-        <div className={styles.formRow}>
-          <div className={styles.formGroup}>
-            <label htmlFor="expirationDate">Expiration Date</label>
-            <input
-              type="month"
-              id="expirationDate"
-              value={paymentDetails.expirationDate}
-              onChange={(e) =>
-                setPaymentDetails({
-                  ...paymentDetails,
-                  expirationDate: e.target.value,
-                })
-              }
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup + ' ' + styles.cvvGroup}>
-            <label htmlFor="cvv">Security Code (CVV)</label>
-            <input
-              type="text"
-              id="cvv"
-              placeholder="123"
-              value={paymentDetails.cvv}
-              onChange={(e) =>
-                setPaymentDetails({
-                  ...paymentDetails,
-                  cvv: e.target.value.replace(/[^0-9]/g, ''),
-                })
-              }
-              maxLength="4"
-              required
-            />
-            <div className={styles.cvvTooltip} title="3-4 digits usually found on the back of your card">?</div>
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div className={styles.submitButtonContainer}>
-          <button 
-            type="submit" 
-            className={styles.submitBtn}
-            disabled={processing}
-          >
-            {processing ? 'Processing...' : `Complete Payment $${formattedPrice}`}
-          </button>
-        </div>
-      </form>
+      {/* Stripe Elements Wrapper */}
+      <Elements stripe={stripePromise}>
+        <CheckoutForm 
+          price={formattedPrice} 
+          car={car} 
+          onPaymentStatus={handlePaymentStatus} 
+        />
+      </Elements>
 
       {/* Payment Status */}
       {paymentStatus && (
