@@ -68,46 +68,57 @@ const CarSelectionPage = () => {
     console.log(car_prices?.data[selectedCar], "car_prices");
     if (selectedCar) {
       let data = {
-        pickup_datetime: booking_details?.pickup_datetime,
-        leaving_datetime: booking_details?.leaving_datetime,
-        from_location: booking_details?.from_location,
-        to_location: booking_details?.to_location,
-        distance: booking_details?.distance,
-        price: car_prices?.data[selectedCar],
+        pickup_datetime: booking_details?.pickup_datetime ?? "11-22-44",
+        leaving_datetime: booking_details?.leaving_datetime ?? "11-22-44",
+        from_location: booking_details?.from_location ?? "ted",
+        to_location: booking_details?.to_location ?? "ted",
+        distance: booking_details?.distance ?? 100,
+        price: car_prices?.data[selectedCar] ?? 100,
         email: user_info?.email,
         phone_number: user_info?.phone,
-        booking_type: selectedCar,
+        booking_type: selectedCar ?? "11-22-44",
       };
       console.log(data);
       if (car_prices?.data[selectedCar] > 0) {
         const res = await apiService.bookings.booking(data);
         if (res) {
-       alert("booking success");
+          if (selectedCar) {
+            const selectedCarOption = carOptions.find(
+              (car) => car.type === selectedCar
+            );
+
+            // router.push({
+            //   pathname: "/payment",
+            //   query: {
+            //     car: selectedCar,
+            //     price: car_prices?.data[selectedCar],
+            //     imageUrl: selectedCarOption?.imageUrl,
+            //     description: selectedCarOption?.description,
+            //     maxPassengers: selectedCarOption?.maxPassengers,
+            //     luggageSpace: selectedCarOption?.luggageSpace,
+            //     features: selectedCarOption?.features,
+            //   },
+            // });
+            router.push({
+              pathname: "/payment",
+              query: {
+                car: selectedCar,
+                price: car_prices?.data[selectedCar],
+                imageUrl: selectedCarOption.imageUrl,
+                description: selectedCarOption.description,
+                maxPassengers: selectedCarOption.maxPassengers,
+                luggageSpace: selectedCarOption.luggageSpace,
+                features: selectedCarOption.features,
+              },
+            });
+          } else {
+            alert("Please select a car type");
+          }
         }
       } else {
         alert("Please recheck the data");
       }
     }
-
-    // if (selectedCar) {
-    //   const selectedCarOption = carOptions.find(
-    //     (car) => car.type === selectedCar
-    //   );
-    //   router.push({
-    //     pathname: "/payment",
-    //     query: {
-    //       car: selectedCar,
-    //       price: price,
-    //       imageUrl: selectedCarOption.imageUrl,
-    //       description: selectedCarOption.description,
-    //       maxPassengers: selectedCarOption.maxPassengers,
-    //       luggageSpace: selectedCarOption.luggageSpace,
-    //       features: selectedCarOption.features,
-    //     },
-    //   });
-    // } else {
-    //   alert("Please select a car type");
-    // }
   };
 
   return (
