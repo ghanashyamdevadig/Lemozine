@@ -3,13 +3,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
 import Link from "next/link";
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined ,UserOutlined} from "@ant-design/icons";
 import { Menu, X } from "lucide-react";
 import logo from "../../assets/images/logo/logo-2.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import apiService from "../../pages/api/apiService";
 import { useSelector, useDispatch } from "react-redux";
+
+
 import {
   setUser,
   clearUser,
@@ -33,6 +35,8 @@ function Navbar() {
     password: "",
     confirmPassword: "",
   });
+
+  const some = () => {};
 
   const [formDataLogin, setFormDataLogin] = useState({
     email: "",
@@ -171,17 +175,17 @@ function Navbar() {
 
   const handleSubmitActn = (e) => {
     if (is_authenticated == true) {
-      alert("here");
       handleLogoutSubmit();
     } else {
       handleLoginSubmit(e);
-      alert("false");
     }
   };
 
   const handleLogoutSubmit = () => {
     dispatch(clearUser());
     dispatch(toggleAuthentication(false));
+    closeModal()
+    router.push("/");
   };
 
   const handleLoginSubmit = async (e) => {
@@ -235,21 +239,27 @@ function Navbar() {
         </div>
 
         {/* Login Section */}
-       
-       
+
         {/* Mobile Menu Button */}
         <div className={styles.menuButton} onClick={toggleDrawer}>
-          
           {isDrawerOpen ? <X size={30} /> : <Menu size={30} />}
-
-          
         </div>
-        
       </div>
-      <div onClick={openModal} style={{justifyContent:'center',alignItems:"center" ,marginLeft:"20px", marginTop:"10px"}}>
-            
-            {user &&   <ProfileInitial />}
-          </div>
+      <div
+        onClick={openModal}
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          marginLeft: "20px",
+          marginTop: "10px",
+        }}
+      >
+        {user ? <ProfileInitial />: 
+            <div onClick={openModal} className={styles.login_Contr}>
+            {user ? user.name : "Login"}{" "}  <UserOutlined />
+          
+          </div>}
+      </div>
       {/* Mobile Drawer */}
       <div
         ref={drawerRef}

@@ -60,6 +60,7 @@
   background-color: 'green';
 }
 
+
 .modal {
   position: fixed;
   top: 50%;
@@ -76,6 +77,11 @@
   z-index: -90000; /* Ensure this is lower than loader’s z-index */
 
 }
+.login_Contr{
+  display:flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  }
 
 .close_modal{
   display: flex;
@@ -85,6 +91,8 @@
   pointer-events: auto;
   cursor: pointer;
 }
+
+
 
 .modal::backdrop {
   background: rgba(0, 0, 0, 0.5);
