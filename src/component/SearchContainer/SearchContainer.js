@@ -6,13 +6,17 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setCarPrices, setBookingDetails } from "@/redux/store/userSlice";
+import { setCarPrices, setBookingDetails ,togglePageLoader} from "@/redux/store/userSlice";
 import styles from "./SearchContainer.module.css";
 import apiService from "@/pages/api/apiService";
-
-const GOOGLE_MAPS_API_KEY = 'AIzaSyDWNr5Pjdmkd6F0nAp-4rbBXuRArDs4RCk';
+import { useSelector } from "react-redux";
+import ToastService from "../../config/toast"
+const GOOGLE_MAPS_API_KEY = "AIzaSyDWNr5Pjdmkd6F0nAp-4rbBXuRArDs4RCk";
 
 const SearchForm = () => {
+
+  const {user,is_authenticated} = useSelector((state) => state.user);
+
 
   const [pickUpLocation, setPickUpLocation] = useState("");
   const [dropLocation, setDropLocation] = useState("");
@@ -32,8 +36,10 @@ const SearchForm = () => {
   // Load Google Maps API only once
   useEffect(() => {
     if (typeof window !== "undefined" && !window.google) {
-      const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
-      
+      const existingScript = document.querySelector(
+        `script[src*="maps.googleapis.com"]`
+      );
+
       if (!existingScript) {
         const script = document.createElement("script");
         script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
@@ -49,11 +55,18 @@ const SearchForm = () => {
 
   // Initialize Google Places Autocomplete
   useEffect(() => {
-    if (!isGoogleLoaded || !pickupInputRef.current || !dropInputRef.current) return;
+    if (!isGoogleLoaded || !pickupInputRef.current || !dropInputRef.current)
+      return;
 
     try {
-      const pickupAutocomplete = new window.google.maps.places.Autocomplete(pickupInputRef.current, { types: ["geocode"] });
-      const dropAutocomplete = new window.google.maps.places.Autocomplete(dropInputRef.current, { types: ["geocode"] });
+      const pickupAutocomplete = new window.google.maps.places.Autocomplete(
+        pickupInputRef.current,
+        { types: ["geocode"] }
+      );
+      const dropAutocomplete = new window.google.maps.places.Autocomplete(
+        dropInputRef.current,
+        { types: ["geocode"] }
+      );
 
       pickupAutocomplete.addListener("place_changed", () => {
         const place = pickupAutocomplete.getPlace();
@@ -77,6 +90,7 @@ const SearchForm = () => {
 
   // Function to calculate distance between locations
   const calculateDistance = (origins, destinations) => {
+    
     return new Promise((resolve, reject) => {
       if (!window.google) {
         reject("Google Maps API not loaded");
@@ -93,44 +107,48 @@ const SearchForm = () => {
           unitSystem: window.google.maps.UnitSystem.METRIC,
         },
         async (response, status) => {
-         console.log(response?.rows[0]?.elements[0]?.distance?.text        )
-         let km=removeText(response?.rows[0]?.elements[0]?.distance?.text) ?? 0
-         const res = await apiService.users.getCarDetails(km);
-         console.log(res,pickUpLocation,dropLocation,"test location")
+          console.log(response?.rows[0]?.elements[0]?.distance?.text);
+          let km =
+            removeText(response?.rows[0]?.elements[0]?.distance?.text) ?? 0;
+          const res = await apiService.users.getCarDetails(km);
+          console.log(res, pickUpLocation, dropLocation, "test location");
 
-         const searchResult = {
-          pickup_datetime: startDate ? startDate.toISOString() : null,
-          leaving_datetime: endDate ? endDate.toISOString() : null,
-          from_location: pickUpLocation?.value,
-          to_location: dropLocation?.value,
-          km,
-         
-        };
+          const searchResult = {
+            pickup_datetime: startDate ? startDate.toISOString() : null,
+            leaving_datetime: endDate ? endDate.toISOString() : null,
+            from_location: pickUpLocation?.value,
+            to_location: dropLocation?.value,
+            km,
+          };
 
-        dispatch(setBookingDetails(searchResult))
+          dispatch(setBookingDetails(searchResult));
 
+          if (res?.status==200) {
+            dispatch(setCarPrices(res));
+            navigate.push("/bookings");
+            dispatch(togglePageLoader(false));
+          }
+          else{
+            ToastService.showError("Something went wrong please tr again")
+            dispatch(togglePageLoader(false));
+          }
 
-         if(res){
-          dispatch(setCarPrices(res))
-          navigate.push("/bookings");
         }
-
-
-         console.log(km)
-        }
-       
       );
     });
   };
 
-
   function removeText(input) {
     return parseFloat(input); // Extracts the numeric part
-}
+  }
+
+
   // Handle Search Click
   const handleSearch = async () => {
+
+    isAuthenticated()
     if (!pickupPlaceId || !dropPlaceId) {
-      alert("Please select valid pickup and drop locations.");
+      ToastService.showError("Please select valid pickup and drop locations.");
       return;
     }
 
@@ -139,12 +157,14 @@ const SearchForm = () => {
       return;
     }
 
-
-
     // setIsLoading(true);
 
     try {
-      const distanceResult = await calculateDistance(pickupPlaceId, dropPlaceId);
+         dispatch(togglePageLoader(true));
+      const distanceResult = await calculateDistance(
+        pickupPlaceId,
+        dropPlaceId
+      );
 
       const searchResult = {
         pickup_location: pickUpLocation,
@@ -167,6 +187,14 @@ const SearchForm = () => {
       setIsLoading(false);
     }
   };
+
+  const isAuthenticated=()=>{
+    if(!is_authenticated){
+      ToastService?.showError("Please login before searching");
+      return
+    }
+   
+  }
 
   return (
     <div className={styles.container}>
@@ -234,8 +262,8 @@ const SearchForm = () => {
         </div>
       </div>
 
-      <button 
-        className={styles.searchButton} 
+      <button
+        className={styles.searchButton}
         onClick={handleSearch}
         disabled={isLoading}
       >

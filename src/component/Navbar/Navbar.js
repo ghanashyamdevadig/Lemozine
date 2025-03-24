@@ -10,9 +10,17 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import apiService from "../../pages/api/apiService";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser, clearUser } from "@/redux/store/userSlice";
+import {
+  setUser,
+  clearUser,
+  toggleAuthentication,
+  togglePageLoader,
+} from "@/redux/store/userSlice";
+import ToastService from "@/config/toast";
 
 function Navbar() {
+    const {page_loader,is_authenticated} = useSelector((state) => state.user);
+  
   const modalRef = useRef(null);
   const drawerRef = useRef(null);
   const router = useRouter();
@@ -70,6 +78,16 @@ function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isDrawerOpen]);
 
+
+  useEffect(() => {
+    if (page_loader) {
+      closeModal();
+    } else if (!page_loader && modalRef.current && is_authenticated === false) {
+      modalRef.current.showModal();
+    }
+  }, [page_loader, is_authenticated]);
+  
+
   const openModal = () => {
     modalRef.current.showModal();
   };
@@ -96,23 +114,46 @@ function Navbar() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(togglePageLoader(true));
+    setError(""); // Clear previous errors
+
+    // Validate email
     if (!validateEmail(formData.email)) {
       setError("Invalid email format!");
+      dispatch(togglePageLoader(false));
       return;
     }
+
+    // Validate password match
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
+      dispatch(togglePageLoader(false));
       return;
     }
-    setError("");
-    alert("Form submitted successfully!");
-    console.log(formData, "formData");
-    const response = await apiService.auth.signup(formData);
-    console.log("Registration Successful:", response.data);
-    setIsLoginIn(!isLogin);
+
+    try {
+      const response = await apiService.auth.signup(formData);
+
+      if (response.status === 200) {
+        ToastService.showSuccess("Registration Successful");
+        setIsLoginIn(!isLogin);
+      } else {
+        // Handle API errors with more detail if available
+        const errorMsg =
+          response.data?.message || "Registration failed. Please try again.";
+        setError(errorMsg);
+      }
+    } catch (error) {
+      // Handle unexpected errors (e.g., network issues)
+      const errorMsg =
+        error.response?.data?.message ||
+        "An unexpected error occurred. Please try again.";
+      setError(errorMsg);
+    } finally {
+      dispatch(togglePageLoader(false));
+    }
   };
 
   const handleOutsideClick = (e) => {
@@ -132,6 +173,7 @@ function Navbar() {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    dispatch(togglePageLoader(true));
     if (!validateEmail(formDataLogin.email)) {
       setErrorLogin("Invalid email format!");
       return;
@@ -140,15 +182,26 @@ function Navbar() {
 
     try {
       const response = await apiService.auth.login(formDataLogin);
-      console.log("Login Successful:", response.data,response.data.token);
+      console.log("Login Successful:", response);
       dispatch(setUser(response.data));
-     if(response.data.token){
-      localStorage.setItem('authToken',response.data.token)
-     }
+      dispatch(toggleAuthentication(true));
+     if(response.status==200){
+      
+      if (response.data.token) {
+        localStorage.setItem("authToken", response.data.token);
+        
+      
+      }
+      
       closeModal();
+     }
+   
     } catch (error) {
       console.error("Login failed:", error);
       setErrorLogin("Invalid credentials!");
+    }
+    finally{
+      dispatch(togglePageLoader(false));
     }
   };
 
@@ -207,7 +260,7 @@ function Navbar() {
       </div>
 
       {/* Login Modal */}
-      <dialog
+    <dialog
         ref={modalRef}
         className={styles.modal}
         onClick={handleOutsideClick}
