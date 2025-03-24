@@ -189,6 +189,7 @@ function Navbar() {
       
       if (response.data.token) {
         localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("refreshToken", response.data.refresh_token);
         
       
       }

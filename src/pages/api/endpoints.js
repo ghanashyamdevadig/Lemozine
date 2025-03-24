@@ -2,6 +2,7 @@ const endpoints = {
   auth: {
     login: "/users/login",
     signup: "/users/signup",
+    regenerate:'user/auth/refresh'
   },
   users: {
     list: "/users",

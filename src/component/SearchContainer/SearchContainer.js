@@ -153,7 +153,7 @@ const SearchForm = () => {
     }
 
     if (!startDate || !endDate) {
-      alert("Please select pickup and return dates.");
+      ToastService.showError("Please select pickup and return dates.");
       return;
     }
 
@@ -182,7 +182,7 @@ const SearchForm = () => {
       router.push("/bookings");
     } catch (error) {
       console.error("Error calculating distance:", error);
-      alert("Failed to calculate distance. Please try again.");
+      ToastService.showError("Failed to calculate distance. Please try again.");
     } finally {
       setIsLoading(false);
     }
