@@ -114,6 +114,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
         <input
           id="name"
           type="text"
+          className={styles.inpClr}
           placeholder="John Smith"
           required
           value={billingDetails.name}
@@ -127,6 +128,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
         <label htmlFor="email">Email</label>
         <input
           id="email"
+          className={styles.inpClr}
           type="email"
           placeholder="email@example.com"
           required
@@ -142,6 +144,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
         <input
           id="address"
           type="text"
+          className={styles.inpClr}
           placeholder="123 Main St"
           required
           value={billingDetails.address.line1}
@@ -158,6 +161,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
         <div className={styles.formGroup}>
           <label htmlFor="city">City</label>
           <input
+           className={styles.inpClr}
             id="city"
             type="text"
             placeholder="San Francisco"
@@ -176,6 +180,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
           <label htmlFor="state">State</label>
           <input
             id="state"
+            className={styles.inpClr}
             type="text"
             placeholder="CA"
             required
@@ -192,6 +197,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
         <div className={styles.formGroup}>
           <label htmlFor="zip">ZIP</label>
           <input
+           className={styles.inpClr}
             id="zip"
             type="text"
             placeholder="94103"

@@ -63,6 +63,7 @@
   display: flex;
   gap: 16px;
   margin-bottom: 16px;
+  color: black;
 }
 
 .formRow .formGroup {
@@ -163,6 +164,10 @@
 
 .formGroup {
   margin-bottom: 24px;
+  color: black;
+}
+.inpClr{
+  color: black;
 }
 
 .formRow .formGroup {

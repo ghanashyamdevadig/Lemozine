@@ -15,7 +15,7 @@ const GOOGLE_MAPS_API_KEY = "AIzaSyDWNr5Pjdmkd6F0nAp-4rbBXuRArDs4RCk";
 
 const SearchForm = () => {
 
-  const {user,is_authenticated} = useSelector((state) => state.user);
+  const {is_authenticated} = useSelector((state) => state.user);
 
 
   const [pickUpLocation, setPickUpLocation] = useState("");

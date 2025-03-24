@@ -1,0 +1,32 @@
+/* Parent container to center the profile */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  
+}
+
+/* Profile initial design */
+.profileContainer {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient effect */
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    margin-bottom:20px
+}
+
+.profileContainer:hover {
+    transform: scale(1.1); /* Slight zoom effect */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+}

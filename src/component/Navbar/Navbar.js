@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
 import Link from "next/link";
-import { CloseOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import { Menu, X } from "lucide-react";
 import logo from "../../assets/images/logo/logo-2.png";
 import Image from "next/image";
@@ -17,10 +17,10 @@ import {
   togglePageLoader,
 } from "@/redux/store/userSlice";
 import ToastService from "@/config/toast";
-
+import ProfileInitial from "../ProfileInitial/ProfileInitial";
 function Navbar() {
-    const {page_loader,is_authenticated} = useSelector((state) => state.user);
-  
+  const { page_loader, is_authenticated } = useSelector((state) => state.user);
+
   const modalRef = useRef(null);
   const drawerRef = useRef(null);
   const router = useRouter();
@@ -78,7 +78,6 @@ function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isDrawerOpen]);
 
-
   useEffect(() => {
     if (page_loader) {
       closeModal();
@@ -86,7 +85,6 @@ function Navbar() {
       modalRef.current.showModal();
     }
   }, [page_loader, is_authenticated]);
-  
 
   const openModal = () => {
     modalRef.current.showModal();
@@ -171,6 +169,21 @@ function Navbar() {
     setFormDataLogin({ ...formDataLogin, [e.target.name]: e.target.value });
   };
 
+  const handleSubmitActn = (e) => {
+    if (is_authenticated == true) {
+      alert("here");
+      handleLogoutSubmit();
+    } else {
+      handleLoginSubmit(e);
+      alert("false");
+    }
+  };
+
+  const handleLogoutSubmit = () => {
+    dispatch(clearUser());
+    dispatch(toggleAuthentication(false));
+  };
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     dispatch(togglePageLoader(true));
@@ -185,23 +198,18 @@ function Navbar() {
       console.log("Login Successful:", response);
       dispatch(setUser(response.data));
       dispatch(toggleAuthentication(true));
-     if(response.status==200){
-      
-      if (response.data.token) {
-        localStorage.setItem("authToken", response.data.token);
-        localStorage.setItem("refreshToken", response.data.refresh_token);
-        
-      
+      if (response.status == 200) {
+        if (response.data.token) {
+          localStorage.setItem("authToken", response.data.token);
+          localStorage.setItem("refreshToken", response.data.refresh_token);
+        }
+
+        closeModal();
       }
-      
-      closeModal();
-     }
-   
     } catch (error) {
       console.error("Login failed:", error);
       setErrorLogin("Invalid credentials!");
-    }
-    finally{
+    } finally {
       dispatch(togglePageLoader(false));
     }
   };
@@ -227,29 +235,21 @@ function Navbar() {
         </div>
 
         {/* Login Section */}
-        <div className={styles.login}>
-          <div onClick={openModal}>
-            {user ? user.name : "Login"}{" "}
-            {user ? (
-              <button
-                onClick={() => {
-                  dispatch(clearUser());
-                }}
-              >
-                <LogoutOutlined />
-              </button>
-            ) : (
-              <UserOutlined />
-            )}
-          </div>
-        </div>
-
+       
+       
         {/* Mobile Menu Button */}
         <div className={styles.menuButton} onClick={toggleDrawer}>
+          
           {isDrawerOpen ? <X size={30} /> : <Menu size={30} />}
-        </div>
-      </div>
 
+          
+        </div>
+        
+      </div>
+      <div onClick={openModal} style={{justifyContent:'center',alignItems:"center" ,marginLeft:"20px", marginTop:"10px"}}>
+            
+            {user &&   <ProfileInitial />}
+          </div>
       {/* Mobile Drawer */}
       <div
         ref={drawerRef}
@@ -261,7 +261,7 @@ function Navbar() {
       </div>
 
       {/* Login Modal */}
-    <dialog
+      <dialog
         ref={modalRef}
         className={styles.modal}
         onClick={handleOutsideClick}
@@ -336,29 +336,38 @@ function Navbar() {
             </div>
           ) : (
             <div>
-              <h2 className={styles.modalTitle}>Login</h2>
-              <form onSubmit={handleLoginSubmit} className={styles.modalForm}>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  className={styles.input}
-                  required
-                  value={formDataLogin.email}
-                  onChange={handleChangeLogin}
-                />
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  className={styles.input}
-                  required
-                  value={formDataLogin.password}
-                  onChange={handleChangeLogin}
-                />
+              {!is_authenticated ? (
+                <h2 className={styles.modalTitle}>Login</h2>
+              ) : (
+                <ProfileInitial />
+              )}
+              <form onSubmit={handleSubmitActn} className={styles.modalForm}>
+                {!is_authenticated && (
+                  <>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      className={styles.input}
+                      required
+                      value={formDataLogin.email}
+                      onChange={handleChangeLogin}
+                    />
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      className={styles.input}
+                      required
+                      value={formDataLogin.password}
+                      onChange={handleChangeLogin}
+                    />
+                  </>
+                )}
+
                 {errorLogin && <p className={styles.error}>{errorLogin}</p>}
                 <button type="submit" className={styles.submitButton}>
-                  Login
+                  {is_authenticated ? "Log Out" : "Log in"}
                 </button>
                 <p className={styles.signupText}>
                   Don't have an account?

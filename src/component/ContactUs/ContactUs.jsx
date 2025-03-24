@@ -16,14 +16,14 @@ const ContactUs = () => {
 
       <form className={styles.orderForm}>
         <div className={styles.inputGroup}>
-          <div className={styles.inputField}>
+          {/* <div className={styles.inputField}>
             <label>First Name</label>
             <input type="text" placeholder="First Name" required />
           </div>
           <div className={styles.inputField}>
             <label>Email *</label>
             <input type="email" placeholder="Email" required />
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.textAreaField}>

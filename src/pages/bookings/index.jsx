@@ -171,9 +171,11 @@ const CarSelectionPage = () => {
         </section>
       )}
 
-      <button className={styles.submitBtn} onClick={handleProceedToPayment}>
+<div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTops:"20px"}}>
+<button className={styles.submitBtn} onClick={handleProceedToPayment}>
         Proceed to Payment
       </button>
+</div>
     </div>
   );
 };

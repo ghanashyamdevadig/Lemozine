@@ -3,11 +3,13 @@
     margin: 0 auto;
     padding: 40px;
     max-width: 1200px;
+  
   }
   
   .carSelectionHeader h1 {
     font-size: 2.2rem;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
+    margin-top:70px;
     color: #333;
   }
   
@@ -114,6 +116,7 @@
     margin-top: 20px;
     text-align: center; /* Centers the proceed button */
   }
+
   
   .submitBtn {
     background-color: #2E4053;
@@ -124,8 +127,11 @@
     font-size: 1.1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    align-self: center !important;
+    margin: 10px;
   }
-  
+
+
   .submitBtn:hover {
     background-color: #2E4053;
   }
@@ -138,7 +144,7 @@
       gap: 15px;
       max-width: 100%;
     }
-  
+    
     .carOption {
       width: 100%; /* Ensure full width on smaller screens */
       margin-bottom: 20px; /* Add space between cards on mobile */
@@ -152,6 +158,11 @@
       padding-left: 0;
     }
   
+    .carSelectionHeader h1 {
+      
+      margin-top:30px;
+      
+    }
     .submitBtn {
       width: 100%; /* Full width button on mobile */
       padding: 15px 0;
