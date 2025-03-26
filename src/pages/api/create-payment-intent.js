@@ -1,37 +1,27 @@
-// File: pages/api/create-payment-intent.js
 import Stripe from 'stripe';
 
 // Initialize Stripe with your secret key
-// Replace with your actual secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe('sk_test_51R6BqeFDa5LOpFSn5VdfMVGzuWDboUyjY8rPZu2aIzjTzIOHYaZgf7FTdHix1P7ikMvs4lPdLiFgxLCN5XtMiduc00f4FwkdLR');
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).end('Method Not Allowed');
-  }
+  if (req.method === 'POST') {
+    try {
+      // Destructure the data from the request body
+      const { amount, currency, description } = req.body;
 
-  try {
-    const { amount, currency, description } = req.body;
+      // Create a PaymentIntent with the amount, currency, and description
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency,
+        description,
+      });
 
-    // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency,
-      description,
-      // Optional: Specify payment method types to support
-      payment_method_types: ['card'],
-      // Optional: Add metadata
-      metadata: {
-        type: 'car_rental',
-      },
-    });
-
-    // Send the client secret to the client
-    res.status(200).json({
-      clientSecret: paymentIntent.client_secret,
-    });
-  } catch (error) {
-    console.error('Error creating payment intent:', error);
-    res.status(500).json({ error: error.message });
+      // Send the client secret to the frontend
+      res.status(200).json({ clientSecret: paymentIntent.client_secret });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  } else {
+    res.status(405).json({ error: 'Method Not Allowed' });
   }
 }

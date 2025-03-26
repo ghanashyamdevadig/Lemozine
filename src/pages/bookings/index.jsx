@@ -75,7 +75,7 @@ const CarSelectionPage = () => {
     const priceValue = carPrices?.data[selectedCar];
     if (!priceValue) {
       dispatch(togglePageLoader(false));
-      ToastService.error("Invalid car price. Please try again.");
+      ToastService.showError("Invalid car price. Please try again.");
       return;
     }
 

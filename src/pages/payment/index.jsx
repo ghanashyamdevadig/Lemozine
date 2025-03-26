@@ -10,10 +10,9 @@ import {
 import styles from "./payment.module.css";
 
 // Initialize Stripe with your publishable key
-// Replace with your actual publishable key
-const stripePromise = loadStripe("pk_test_YourStripePublishableKey");
+const stripePromise = loadStripe("pk_test_51R6BqeFDa5LOpFSn5VdfMVGzuWDboUyjY8rPZu2aIzjTzIOHYaZgf7FTdHix1P7ikMvs4lPdLiFgxLCN5XtMiduc00f4FwkdLR");
 
-// Payment form component
+// CheckoutForm component
 const CheckoutForm = ({ price, car, onPaymentStatus }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -34,9 +33,8 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
   const [succeeded, setSucceeded] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
 
-  // Create payment intent on component mount
   useEffect(() => {
-    // Call your backend to create a PaymentIntent
+    // Create payment intent from backend API
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: {
@@ -45,7 +43,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
       body: JSON.stringify({ 
         amount: parseFloat(price) * 100, // Convert to cents
         currency: "usd",
-        description: `Car Rental: ${car}`
+        description: `Car Rental: ${car}`,
       }),
     })
       .then((res) => res.json())
@@ -66,7 +64,6 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
       return;
     }
 
-    // Validate form
     if (!billingDetails.name || !billingDetails.email) {
       setError("Please fill in all required fields");
       return;
@@ -75,7 +72,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
     setProcessing(true);
     onPaymentStatus("Processing payment...", true);
 
-    // Confirm card payment
+    // Confirm card payment with client secret
     const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
@@ -90,9 +87,9 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
     } else {
       setError(null);
       setSucceeded(true);
-      onPaymentStatus("Payment successful! Redirecting to confirmation page...", false);
-      
-      // Redirect to confirmation page after successful payment
+      onPaymentStatus("Payment successful! Redirecting...", false);
+
+      // Redirect after payment success
       setTimeout(() => {
         router.push({
           pathname: "/booking-confirmation",
@@ -108,7 +105,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
   return (
     <form className={styles.paymentForm} onSubmit={handleSubmit}>
       <h2 className={styles.formTitle}>Payment Information</h2>
-      
+      {/* Billing details inputs */}
       <div className={styles.formGroup}>
         <label htmlFor="name">Full Name</label>
         <input
@@ -161,7 +158,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
         <div className={styles.formGroup}>
           <label htmlFor="city">City</label>
           <input
-           className={styles.inpClr}
+            className={styles.inpClr}
             id="city"
             type="text"
             placeholder="San Francisco"
@@ -197,7 +194,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
         <div className={styles.formGroup}>
           <label htmlFor="zip">ZIP</label>
           <input
-           className={styles.inpClr}
+            className={styles.inpClr}
             id="zip"
             type="text"
             placeholder="94103"
@@ -240,7 +237,7 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
       </div>
       
       {error && <div className={styles.errorMessage}>{error}</div>}
-      
+
       <div className={styles.submitButtonContainer}>
         <button
           type="submit"
@@ -254,71 +251,36 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
   );
 };
 
-// Main component
+// Main PaymentPage Component
 const PaymentPage = () => {
   const router = useRouter();
-  const {
-    car,
-    price,
-    imageUrl,
-    description,
-    maxPassengers,
-    luggageSpace,
-    features,
-  } = router.query;
+  const { car, price, imageUrl, description, maxPassengers, luggageSpace, features } = router.query;
 
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [processing, setProcessing] = useState(false);
 
-  // Handle payment status updates
   const handlePaymentStatus = (message, isProcessing) => {
     setPaymentStatus(message);
     setProcessing(isProcessing);
   };
 
-  // Format price for display
   const formattedPrice = price ? parseFloat(price).toFixed(2) : "0.00";
 
   return (
     <div className={styles.paymentPage}>
-      {/* Title */}
       <section className={styles.paymentHeader}>
         <h1>Complete Your Booking</h1>
         <p>Please review your selection and enter your payment information to secure your reservation.</p>
       </section>
 
-      {/* Car and Price Summary */}
       <section className={styles.paymentSummary}>
         <div className={styles.paymentSummaryCard}>
           <div className={styles.carImageContainer}>
             <img src={imageUrl} alt={car} className={styles.carImage} />
           </div>
-          
           <div className={styles.carDetails}>
             <h3>{car}</h3>
-            
-            <div className={styles.carInfoGrid}>
-              <div className={styles.carInfoItem}>
-                <strong>Passengers</strong>
-                <span>{maxPassengers}</span>
-              </div>
-              
-              <div className={styles.carInfoItem}>
-                <strong>Luggage Space</strong>
-                <span>{luggageSpace}</span>
-              </div>
-              
-              <div className={styles.carInfoItem}>
-                <strong>Features</strong>
-                <span>{features}</span>
-              </div>
-              
-              <div className={styles.carInfoItem}>
-                <strong>Description</strong>
-                <span>{description}</span>
-              </div>
-            </div>
-            
+            {/* Car details */}
             <div className={styles.priceTag}>
               ${formattedPrice}
               <small>total</small>
@@ -327,16 +289,10 @@ const PaymentPage = () => {
         </div>
       </section>
 
-      {/* Stripe Elements Wrapper */}
       <Elements stripe={stripePromise}>
-        <CheckoutForm 
-          price={formattedPrice} 
-          car={car} 
-          onPaymentStatus={handlePaymentStatus} 
-        />
+        <CheckoutForm price={formattedPrice} car={car} onPaymentStatus={handlePaymentStatus} />
       </Elements>
 
-      {/* Payment Status */}
       {paymentStatus && (
         <section className={`${styles.paymentStatus} ${processing ? styles.statusProcessing : styles.statusSuccess}`}>
           <p>{paymentStatus}</p>
