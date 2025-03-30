@@ -6,17 +6,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setCarPrices, setBookingDetails ,togglePageLoader} from "@/redux/store/userSlice";
+import {
+  setCarPrices,
+  setBookingDetails,
+  togglePageLoader,
+} from "@/redux/store/userSlice";
 import styles from "./SearchContainer.module.css";
 import apiService from "@/pages/api/apiService";
 import { useSelector } from "react-redux";
-import ToastService from "../../config/toast"
+import ToastService from "../../config/toast";
 const GOOGLE_MAPS_API_KEY = "AIzaSyDWNr5Pjdmkd6F0nAp-4rbBXuRArDs4RCk";
 
 const SearchForm = () => {
-
-  const {is_authenticated} = useSelector((state) => state.user);
-
+  const { is_authenticated } = useSelector((state) => state.user);
 
   const [pickUpLocation, setPickUpLocation] = useState("");
   const [dropLocation, setDropLocation] = useState("");
@@ -90,7 +92,6 @@ const SearchForm = () => {
 
   // Function to calculate distance between locations
   const calculateDistance = (origins, destinations) => {
-    
     return new Promise((resolve, reject) => {
       if (!window.google) {
         reject("Google Maps API not loaded");
@@ -123,16 +124,14 @@ const SearchForm = () => {
 
           dispatch(setBookingDetails(searchResult));
 
-          if (res?.status==200) {
+          if (res?.status == 200) {
             dispatch(setCarPrices(res));
             navigate.push("/bookings");
             dispatch(togglePageLoader(false));
-          }
-          else{
-            ToastService.showError("Something went wrong please tr again")
+          } else {
+            ToastService.showError("Something went wrong please tr again");
             dispatch(togglePageLoader(false));
           }
-
         }
       );
     });
@@ -142,30 +141,34 @@ const SearchForm = () => {
     return parseFloat(input); // Extracts the numeric part
   }
 
-
   // Handle Search Click
   const handleSearch = async () => {
-
-    isAuthenticated()
+    // Early exit if not authenticated
+    if (!is_authenticated) {
+      ToastService?.showError("Please login before searching");
+      return;
+    }
+  
+    // Early exit if pickup or drop locations are not selected
     if (!pickupPlaceId || !dropPlaceId) {
-      ToastService.showError("Please select valid pickup and drop locations.");
-      return;
+      return showToastError("Please select valid pickup and drop locations.");
     }
-
+  
+    // Early exit if dates are not selected
     if (!startDate || !endDate) {
-      ToastService.showError("Please select pickup and return dates.");
-      return;
+      return showToastError("Please select pickup and return dates.");
     }
-
-    // setIsLoading(true);
-
+  
+    // Set loading state before API calls
+    setIsLoading(true);
+  
     try {
-         dispatch(togglePageLoader(true));
-      const distanceResult = await calculateDistance(
-        pickupPlaceId,
-        dropPlaceId
-      );
-
+      dispatch(togglePageLoader(true));
+  
+      // Calculate distance and get the result
+      const distanceResult = await calculateDistance(pickupPlaceId, dropPlaceId);
+  
+      // Prepare the search result
       const searchResult = {
         pickup_location: pickUpLocation,
         drop_location: dropLocation,
@@ -175,27 +178,28 @@ const SearchForm = () => {
         duration: distanceResult.duration,
         price: distanceResult.price,
       };
-
+  
+      // Dispatch the results to the store
       dispatch(setBookingDetails(searchResult));
       dispatch(setCarPrices(distanceResult.price));
-
+  
+      // Navigate to the bookings page
       router.push("/bookings");
     } catch (error) {
       console.error("Error calculating distance:", error);
       ToastService.showError("Failed to calculate distance. Please try again.");
     } finally {
+      // Reset loading state
       setIsLoading(false);
+      dispatch(togglePageLoader(false));
     }
   };
-
-  const isAuthenticated=()=>{
-    if(!is_authenticated){
-      ToastService?.showError("Please login before searching");
-      return
-    }
-   
-  }
-
+  
+  // Helper function for error display
+  const showToastError = (message) => {
+    ToastService.showError(message);
+  };
+  
   return (
     <div className={styles.container}>
       <div className={styles.inputGroup}>
@@ -239,8 +243,12 @@ const SearchForm = () => {
             startDate={startDate}
             endDate={endDate}
             minDate={new Date()}
-            placeholderText="Select pickup date"
+            placeholderText="Select pickup date and time"
             className={styles.datePicker}
+            showTimeSelect
+            timeIntervals={15} // Time intervals, can be 15, 30, etc.
+            timeCaption="Time"
+            dateFormat="MMMM d, yyyy h:mm aa" // Date and time format
           />
         </div>
       </div>
@@ -256,8 +264,12 @@ const SearchForm = () => {
             startDate={startDate}
             endDate={endDate}
             minDate={startDate || new Date()}
-            placeholderText="Select return date"
+            placeholderText="Select return date and time"
             className={styles.datePicker}
+            showTimeSelect
+            timeIntervals={15} // Time intervals, can be 15, 30, etc.
+            timeCaption="Time"
+            dateFormat="MMMM d, yyyy h:mm aa" // Date and time format
           />
         </div>
       </div>
