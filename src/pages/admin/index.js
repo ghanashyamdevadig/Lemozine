@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Space, Table, Tag } from "antd";
 import styles from "./admin.module.css";
-
+import apiService from "../api/apiService";
 const columns = [
   {
     title: "Name",
@@ -32,8 +32,8 @@ const columns = [
 ];
 
 const ADMIN_CREDENTIALS = {
-  username: "msadmin",
-  password: "masslivery123", 
+  username: "admin",
+  password: "Pwd@1234", 
 };
 
 function Admin({
@@ -62,6 +62,14 @@ function Admin({
       }
     }
   }, []);
+  useEffect(()=>{
+    getBookingList()
+  })
+
+  const getBookingList=async ()=>{
+   const res = await apiService.bookings.adminbokings();
+   console.log(res,"res for data")
+  }
 
   const handleLogout = () => {
     setIsAuthenticated(false);
