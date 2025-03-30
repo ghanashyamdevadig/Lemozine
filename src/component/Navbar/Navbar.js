@@ -166,6 +166,8 @@ function Navbar() {
     dispatch(clearUser());
     dispatch(toggleAuthentication(false));
     closeModal();
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
     router.push("/");
   };
 
@@ -199,7 +201,6 @@ function Navbar() {
     }
   };
 
-  console.log("User:", router.asPath === "/");
 
   return (
     <nav className={styles.navbar}>
