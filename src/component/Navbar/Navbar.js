@@ -58,7 +58,8 @@ function Navbar() {
     const section = document.getElementById(id);
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    } 
+    setIsDrawerOpen(false);
   };
 
   // Close drawer when clicking outside
@@ -198,6 +199,8 @@ function Navbar() {
     }
   };
 
+  console.log("User:", router.asPath === "/");
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
@@ -212,18 +215,18 @@ function Navbar() {
         </div>
 
         {/* Desktop About Links */}
-        <div className={styles.about}>
+        {router.asPath === "/" && <div className={styles.about}>
           <div onClick={() => handleScroll("about")}>About</div>
           <div onClick={() => handleScroll("services")}>Services</div>
           <div onClick={() => handleScroll("contact")}>Contact Us</div>
-        </div>
+        </div>}
 
         {/* Login Section */}
 
         {/* Mobile Menu Button */}
-        <div className={styles.menuButton} onClick={toggleDrawer}>
+        {router.asPath === "/" && <div className={styles.menuButton} onClick={toggleDrawer}>
           {isDrawerOpen ? <X size={30} /> : <Menu size={30} />}
-        </div>
+        </div>}
       </div>
       <div
         onClick={openModal}
@@ -242,14 +245,14 @@ function Navbar() {
       </div>
 
       {/* Mobile Drawer */}
-      <div
+      {router.asPath === "/" && <div
         ref={drawerRef}
         className={`${styles.drawer} ${isDrawerOpen ? styles.open : ""}`}
       >
         <div onClick={() => handleScroll("about")}>About</div>
         <div onClick={() => handleScroll("services")}>Services</div>
         <div onClick={() => handleScroll("contact")}>Contact Us</div>
-      </div>
+      </div>}
 
       {/* Login Modal */}
       <dialog
