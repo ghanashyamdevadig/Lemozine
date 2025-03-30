@@ -11,6 +11,7 @@ const endpoints = {
   },
   bookings: {
     booking: "/booking",
+    admin_bookings:"/admin/bookings"
   },
 };
 
