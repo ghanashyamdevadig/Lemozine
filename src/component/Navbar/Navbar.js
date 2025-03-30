@@ -57,7 +57,6 @@ function Navbar() {
   };
 
   const handleScroll = (id) => {
-    router.push(`#${id}`, undefined, { shallow: true });
 
     const section = document.getElementById(id);
     if (section) {
