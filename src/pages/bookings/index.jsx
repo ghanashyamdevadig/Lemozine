@@ -93,7 +93,7 @@ const CarSelectionPage = () => {
 
     try {
       const res = await apiService.bookings.booking(bookingData);
-      console.log(res, "res for test");
+      console.log(res, "testing apis");
       if (res?.status == 200) {
         const car = carOptions.find((car) => car.type === selectedCar);
         router.push({

@@ -165,6 +165,10 @@
   z-index: 1000;
 }
 
+.drawer div {
+margin-bottom: 20px;
+}
+
 .drawer.open {
   right: 0;
 }
