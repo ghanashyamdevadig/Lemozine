@@ -154,21 +154,6 @@ function Navbar() {
     setFormDataLogin({ ...formDataLogin, [e.target.name]: e.target.value });
   };
 
-  const handleSubmitActn = (e) => {
-    if (is_authenticated == true) {
-      handleLogoutSubmit();
-    } else {
-      handleLoginSubmit(e);
-    }
-  };
-
-  const handleLogoutSubmit = () => {
-    dispatch(clearUser());
-    dispatch(toggleAuthentication(false));
-    closeModal();
-    router.push("/");
-  };
-
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     dispatch(togglePageLoader(true));
@@ -199,7 +184,27 @@ function Navbar() {
     }
   };
 
-  console.log("User:", router.asPath === "/");
+  const handleLogoutSubmit = (e) => {
+    e.preventDefault();
+    dispatch(clearUser());
+    dispatch(toggleAuthentication(false));
+    closeModal();
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
+    router.replace('/');
+  };
+
+  const handleSubmitActn = (e) => {
+    if (is_authenticated == true) {
+      handleLogoutSubmit(e);
+    } else {
+      handleLoginSubmit(e);
+    }
+  };
+
+
+
+ 
 
   return (
     <nav className={styles.navbar}>
@@ -339,7 +344,7 @@ function Navbar() {
               ) : (
                 <ProfileInitial />
               )}
-              <form onSubmit={handleSubmitActn} className={styles.modalForm}>
+              <form onSubmit={handleSubmitActn} method="POST" className={styles.modalForm}>
                 {!is_authenticated && (
                   <>
                     <input
