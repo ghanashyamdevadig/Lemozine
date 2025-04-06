@@ -1,276 +1,103 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { loadStripe } from "@stripe/stripe-js";
-import {
-  CardElement,
-  Elements,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
 import styles from "./payment.module.css";
+import apiService from "../api/apiService";
 
-// Initialize Stripe with your publishable key
+// Initialize Stripe with your public key
 const stripePromise = loadStripe("pk_test_51R6BqeFDa5LOpFSn5VdfMVGzuWDboUyjY8rPZu2aIzjTzIOHYaZgf7FTdHix1P7ikMvs4lPdLiFgxLCN5XtMiduc00f4FwkdLR");
 
-// CheckoutForm component
 const CheckoutForm = ({ price, car, onPaymentStatus }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const router = useRouter();
-  
-  const [billingDetails, setBillingDetails] = useState({
-    name: "",
-    email: "",
-    address: {
-      line1: "",
-      city: "",
-      state: "",
-      postal_code: "",
-    },
-  });
-  const [processing, setProcessing] = useState(false);
+  const [stripe, setStripe] = useState(null);
   const [error, setError] = useState(null);
-  const [succeeded, setSucceeded] = useState(false);
-  const [clientSecret, setClientSecret] = useState("");
+  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
-    // Create payment intent from backend API
-    fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ 
-        amount: parseFloat(price) * 100, // Convert to cents
+    const initStripe = async () => {
+      const stripeInstance = await stripePromise;
+      setStripe(stripeInstance);
+    };
+    initStripe();
+  }, []);
+
+  const handleCheckout = async () => {
+    try {
+      setProcessing(true);
+      onPaymentStatus("Initializing payment...", true);
+
+      const data = {
         currency: "usd",
+        unit_amount: parseFloat(price) * 100,
         description: `Car Rental: ${car}`,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setClientSecret(data.clientSecret);
-      })
-      .catch((err) => {
-        setError("Failed to initialize payment. Please try again.");
-        console.error("Error creating payment intent:", err);
-      });
-  }, [price, car]);
+      };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+      const res = await apiService.bookings.checkoutSession(data);
+      console.log("Stripe session:", res);
 
-    if (!stripe || !elements) {
-      // Stripe.js has not loaded yet
-      return;
-    }
-
-    if (!billingDetails.name || !billingDetails.email) {
-      setError("Please fill in all required fields");
-      return;
-    }
-
-    setProcessing(true);
-    onPaymentStatus("Processing payment...", true);
-
-    // Confirm card payment with client secret
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: billingDetails,
-      },
-    });
-
-    if (payload.error) {
-      setError(`Payment failed: ${payload.error.message}`);
-      onPaymentStatus(`Payment failed: ${payload.error.message}`, false);
-      setProcessing(false);
-    } else {
-      setError(null);
-      setSucceeded(true);
-      onPaymentStatus("Payment successful! Redirecting...", false);
-
-      // Redirect after payment success
-      setTimeout(() => {
-        router.push({
-          pathname: "/booking-confirmation",
-          query: {
-            paymentId: payload.paymentIntent.id,
-            car,
-          },
+      if (res?.data?.session_id) {
+        const result = await stripe.redirectToCheckout({
+          sessionId: res.data.session_id,
         });
-      }, 2000);
+
+        if (result.error) {
+          setError(result.error.message);
+          onPaymentStatus(`Redirect failed: ${result.error.message}`, false);
+        }
+      } else {
+        setError("Unable to create a checkout session.");
+        onPaymentStatus("Unable to create a checkout session.", false);
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      setError("Payment initialization failed.");
+      onPaymentStatus("Payment initialization failed.", false);
+    } finally {
+      setProcessing(false);
     }
   };
 
   return (
-    <form className={styles.paymentForm} onSubmit={handleSubmit}>
-      <h2 className={styles.formTitle}>Payment Information</h2>
-      {/* Billing details inputs */}
-      <div className={styles.formGroup}>
-        <label htmlFor="name">Full Name</label>
-        <input
-          id="name"
-          type="text"
-          className={styles.inpClr}
-          placeholder="John Smith"
-          required
-          value={billingDetails.name}
-          onChange={(e) => {
-            setBillingDetails({ ...billingDetails, name: e.target.value });
-          }}
-        />
-      </div>
-      
-      <div className={styles.formGroup}>
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          className={styles.inpClr}
-          type="email"
-          placeholder="email@example.com"
-          required
-          value={billingDetails.email}
-          onChange={(e) => {
-            setBillingDetails({ ...billingDetails, email: e.target.value });
-          }}
-        />
-      </div>
-      
-      <div className={styles.formGroup}>
-        <label htmlFor="address">Address</label>
-        <input
-          id="address"
-          type="text"
-          className={styles.inpClr}
-          placeholder="123 Main St"
-          required
-          value={billingDetails.address.line1}
-          onChange={(e) => {
-            setBillingDetails({
-              ...billingDetails,
-              address: { ...billingDetails.address, line1: e.target.value },
-            });
-          }}
-        />
-      </div>
-      
-      <div className={styles.formRow}>
-        <div className={styles.formGroup}>
-          <label htmlFor="city">City</label>
-          <input
-            className={styles.inpClr}
-            id="city"
-            type="text"
-            placeholder="San Francisco"
-            required
-            value={billingDetails.address.city}
-            onChange={(e) => {
-              setBillingDetails({
-                ...billingDetails,
-                address: { ...billingDetails.address, city: e.target.value },
-              });
-            }}
-          />
-        </div>
-        
-        <div className={styles.formGroup}>
-          <label htmlFor="state">State</label>
-          <input
-            id="state"
-            className={styles.inpClr}
-            type="text"
-            placeholder="CA"
-            required
-            value={billingDetails.address.state}
-            onChange={(e) => {
-              setBillingDetails({
-                ...billingDetails,
-                address: { ...billingDetails.address, state: e.target.value },
-              });
-            }}
-          />
-        </div>
-        
-        <div className={styles.formGroup}>
-          <label htmlFor="zip">ZIP</label>
-          <input
-            className={styles.inpClr}
-            id="zip"
-            type="text"
-            placeholder="94103"
-            required
-            value={billingDetails.address.postal_code}
-            onChange={(e) => {
-              setBillingDetails({
-                ...billingDetails,
-                address: { 
-                  ...billingDetails.address, 
-                  postal_code: e.target.value.replace(/[^0-9]/g, '')
-                },
-              });
-            }}
-          />
-        </div>
-      </div>
-      
-      <div className={styles.formGroup}>
-        <label htmlFor="card">Credit Card</label>
-        <div className={styles.cardElementContainer}>
-          <CardElement
-            id="card"
-            options={{
-              style: {
-                base: {
-                  fontSize: "16px",
-                  color: "#424770",
-                  "::placeholder": {
-                    color: "#aab7c4",
-                  },
-                },
-                invalid: {
-                  color: "#9e2146",
-                },
-              },
-            }}
-          />
-        </div>
-      </div>
-      
+    <div className={styles.paymentForm}>
       {error && <div className={styles.errorMessage}>{error}</div>}
-
-      <div className={styles.submitButtonContainer}>
-        <button
-          type="submit"
-          className={styles.submitBtn}
-          disabled={processing || !stripe || !clientSecret}
-        >
-          {processing ? 'Processing...' : `Pay $${parseFloat(price).toFixed(2)}`}
-        </button>
-      </div>
-    </form>
+      <button
+        className={styles.payButton}
+        onClick={handleCheckout}
+        disabled={processing || !stripe}
+      >
+        {processing ? "Processing..." : "Pay Now"}
+      </button>
+    </div>
   );
 };
 
-// Main PaymentPage Component
 const PaymentPage = () => {
   const router = useRouter();
-  const { car, price, imageUrl, description, maxPassengers, luggageSpace, features } = router.query;
-
+  const [car, setCar] = useState("");
+  const [price, setPrice] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [processing, setProcessing] = useState(false);
+
+  useEffect(() => {
+    if (router?.query) {
+      setCar(router.query.car || "");
+      setPrice(router.query.price || "");
+      setImageUrl(router.query.imageUrl || "");
+    }
+  }, [router.query]);
+
+  const formattedPrice = price ? parseFloat(price).toFixed(2) : "0.00";
 
   const handlePaymentStatus = (message, isProcessing) => {
     setPaymentStatus(message);
     setProcessing(isProcessing);
   };
 
-  const formattedPrice = price ? parseFloat(price).toFixed(2) : "0.00";
-
   return (
     <div className={styles.paymentPage}>
       <section className={styles.paymentHeader}>
         <h1>Complete Your Booking</h1>
-        <p>Please review your selection and enter your payment information to secure your reservation.</p>
+        <p>Please review your selection and proceed to secure payment.</p>
       </section>
 
       <section className={styles.paymentSummary}>
@@ -280,21 +107,25 @@ const PaymentPage = () => {
           </div>
           <div className={styles.carDetails}>
             <h3>{car}</h3>
-            {/* Car details */}
             <div className={styles.priceTag}>
-              ${formattedPrice}
-              <small>total</small>
+              ${formattedPrice} <small>total</small>
             </div>
           </div>
         </div>
       </section>
 
-      <Elements stripe={stripePromise}>
-        <CheckoutForm price={formattedPrice} car={car} onPaymentStatus={handlePaymentStatus} />
-      </Elements>
+      <CheckoutForm
+        price={formattedPrice}
+        car={car}
+        onPaymentStatus={handlePaymentStatus}
+      />
 
       {paymentStatus && (
-        <section className={`${styles.paymentStatus} ${processing ? styles.statusProcessing : styles.statusSuccess}`}>
+        <section
+          className={`${styles.paymentStatus} ${
+            processing ? styles.statusProcessing : styles.statusSuccess
+          }`}
+        >
           <p>{paymentStatus}</p>
         </section>
       )}

@@ -15,6 +15,8 @@ const apiService = {
   bookings: {
     booking: (data) => apiClient.post(endpoints.bookings.booking,data),
     adminbokings:()=>apiClient.post(endpoints.bookings.admin_bookings),
+    // checkoutSession:(data) => apiClient.post(endpoints.bookings.create_checkout_session(data)),
+    checkoutSession: (data) => apiClient.post(endpoints.bookings.create_checkout_session, data),
   },
 };
 

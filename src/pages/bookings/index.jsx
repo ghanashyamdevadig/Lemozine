@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./bookings.module.css";
 import apiService from "../api/apiService";
-import { togglePageLoader} from "@/redux/store/userSlice";
+import { togglePageLoader, updateBookingData } from "@/redux/store/userSlice";
 import ToastService from "@/config/toast";
-
 
 const carOptionsData = (carPrices) => [
   {
@@ -44,7 +43,7 @@ const CarSelectionPage = () => {
   const [selectedCar, setSelectedCar] = useState(null);
   const [price, setPrice] = useState(null);
   const router = useRouter();
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { query } = router;
 
   const userInfo = useSelector((state) => state.user?.user);
@@ -65,7 +64,7 @@ const CarSelectionPage = () => {
   };
 
   const handleProceedToPayment = async () => {
-       dispatch(togglePageLoader(true));
+    dispatch(togglePageLoader(true));
     if (!selectedCar) {
       ToastService.showError("Please select a car type");
       dispatch(togglePageLoader(false));
@@ -90,34 +89,38 @@ const CarSelectionPage = () => {
       phone_number: userInfo?.phone,
       booking_type: selectedCar,
     };
+    console.log(bookingData,"bookingData setting")
+    dispatch(updateBookingData(bookingData));
+    dispatch(togglePageLoader(false));
+    const car = carOptions.find((car) => car.type === selectedCar);
 
-    try {
-      const res = await apiService.bookings.booking(bookingData);
-      console.log(res, "res for test");
-      if (res?.status == 200) {
-        const car = carOptions.find((car) => car.type === selectedCar);
-        router.push({
-          pathname: "/payment",
-          query: {
-            car: selectedCar,
-            price: priceValue,
-            imageUrl: car.imageUrl,
-            description: car.description,
-            maxPassengers: car.maxPassengers,
-            luggageSpace: car.luggageSpace,
-            features: car.features,
-          },
-        });
-      } else {
-        ToastService.showError("Booking failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Booking Error:", error);
-      ToastService.showError("An error occurred. Please try again.");
-    }
-    finally{
-      dispatch(togglePageLoader(false));
-    }
+    router.push({
+      pathname: "/payment",
+      query: {
+        car: selectedCar,
+        price: priceValue,
+        imageUrl: car.imageUrl,
+        description: car.description,
+        maxPassengers: car.maxPassengers,
+        luggageSpace: car.luggageSpace,
+        features: car.features,
+      },
+    });
+    // try {
+    //   const res = await apiService.bookings.booking(bookingData);
+    //   console.log(res, "res for test");
+    //   if (res?.status == 200) {
+
+    //   } else {
+    //     ToastService.showError("Booking failed. Please try again.");
+    //   }
+    // } catch (error) {
+    //   console.error("Booking Error:", error);
+    //   ToastService.showError("An error occurred. Please try again.");
+    // }
+    // finally{
+    //   dispatch(togglePageLoader(false));
+    // }
   };
 
   return (
@@ -171,11 +174,18 @@ const CarSelectionPage = () => {
         </section>
       )}
 
-<div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTops:"20px"}}>
-<button className={styles.submitBtn} onClick={handleProceedToPayment}>
-        Proceed to Payment
-      </button>
-</div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTops: "20px",
+        }}
+      >
+        <button className={styles.submitBtn} onClick={handleProceedToPayment}>
+          Proceed to Payment
+        </button>
+      </div>
     </div>
   );
 };
