@@ -265,6 +265,22 @@
   margin-left: auto;
   margin-right: auto;
 }
+.payButton {
+  padding: 12px 24px;
+  background-color: #635bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.payButton:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
 
 .statusProcessing {
   background-color: #eff6ff;

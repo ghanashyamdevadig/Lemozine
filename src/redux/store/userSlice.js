@@ -5,7 +5,8 @@ const initialState = {
   is_authenticated: false,
   car_prices: {},
   booking_details: {},
-  page_loader:false
+  page_loader:false,
+  booking_data:{}
 };
 
 const userSlice = createSlice({
@@ -29,10 +30,16 @@ const userSlice = createSlice({
     },
     togglePageLoader:(state, action) => {
       state.page_loader = action.payload;
-    }
+    },
+    updateBookingData:(state, action) => {
+      state.booking_data = action.payload;
+    },
+    resetBookingData:(state) => {
+      state.booking_data = {};
+    },
   },
 });
 
-export const { setUser, clearUser, setCarPrices, setBookingDetails,toggleAuthentication ,togglePageLoader} =
+export const { setUser, clearUser, setCarPrices, setBookingDetails,toggleAuthentication ,togglePageLoader,updateBookingData,resetBookingData} =
   userSlice.actions;
 export default userSlice.reducer;
