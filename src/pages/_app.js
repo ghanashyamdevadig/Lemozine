@@ -1,5 +1,5 @@
 import '@/styles/globals.css';
-import Layout from './Layout';
+import Layout from "./Layout";
 import { Inter } from 'next/font/google';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
