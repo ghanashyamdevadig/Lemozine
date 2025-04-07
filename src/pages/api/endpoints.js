@@ -11,6 +11,8 @@ const endpoints = {
   },
   bookings: {
     booking: "/booking",
+    admin_bookings:"/admin/bookings",
+    create_checkout_session:'/create-checkout-session'
   },
 };
 

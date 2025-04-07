@@ -17,7 +17,7 @@
   font-size: 2.2rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 }
 
 .paymentHeader p {
@@ -265,6 +265,22 @@
   margin-left: auto;
   margin-right: auto;
 }
+.payButton {
+  padding: 12px 24px;
+  background-color: #635bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.payButton:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
 
 .statusProcessing {
   background-color: #eff6ff;
@@ -301,5 +317,16 @@
   .formRow {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .paymentHeader{
+    margin-top: 10px;
+  }
+
+  .paymentHeader h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
   }
 }

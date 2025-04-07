@@ -28,7 +28,7 @@ const refreshToken = async () => {
     console.error("Token refresh failed:", error);
     localStorage.removeItem("authToken");
     localStorage.removeItem("refreshToken");
-    window.location.href = "/login"; // Redirect to login if refresh fails
+    window.location.href = "/"; // Redirect to login if refresh fails
     return null;
   }
 };

@@ -3,15 +3,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
 import Link from "next/link";
-import { CloseOutlined ,UserOutlined} from "@ant-design/icons";
+import { CloseOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu, X } from "lucide-react";
 import logo from "../../assets/images/logo/logo-2.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import apiService from "../../pages/api/apiService";
 import { useSelector, useDispatch } from "react-redux";
-
-
 import {
   setUser,
   clearUser,
@@ -20,6 +18,7 @@ import {
 } from "@/redux/store/userSlice";
 import ToastService from "@/config/toast";
 import ProfileInitial from "../ProfileInitial/ProfileInitial";
+
 function Navbar() {
   const { page_loader, is_authenticated } = useSelector((state) => state.user);
 
@@ -35,8 +34,6 @@ function Navbar() {
     password: "",
     confirmPassword: "",
   });
-
-  const some = () => {};
 
   const [formDataLogin, setFormDataLogin] = useState({
     email: "",
@@ -57,12 +54,12 @@ function Navbar() {
   };
 
   const handleScroll = (id) => {
-    router.push(`#${id}`, undefined, { shallow: true });
 
     const section = document.getElementById(id);
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    } 
+    setIsDrawerOpen(false);
   };
 
   // Close drawer when clicking outside
@@ -82,16 +79,10 @@ function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isDrawerOpen]);
 
-  useEffect(() => {
-    if (page_loader) {
-      closeModal();
-    } else if (!page_loader && modalRef.current && is_authenticated === false) {
+  const openModal = () => {
+    if (!page_loader) {
       modalRef.current.showModal();
     }
-  }, [page_loader, is_authenticated]);
-
-  const openModal = () => {
-    modalRef.current.showModal();
   };
 
   const closeModal = () => {
@@ -116,6 +107,7 @@ function Navbar() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(togglePageLoader(true));
@@ -158,34 +150,8 @@ function Navbar() {
     }
   };
 
-  const handleOutsideClick = (e) => {
-    if (e.target === modalRef.current) {
-      closeModal();
-    }
-  };
-
-  const handleCloseClick = (e) => {
-    e.stopPropagation(); // Prevents the click from bubbling up
-    closeModal();
-  };
-
   const handleChangeLogin = (e) => {
     setFormDataLogin({ ...formDataLogin, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmitActn = (e) => {
-    if (is_authenticated == true) {
-      handleLogoutSubmit();
-    } else {
-      handleLoginSubmit(e);
-    }
-  };
-
-  const handleLogoutSubmit = () => {
-    dispatch(clearUser());
-    dispatch(toggleAuthentication(false));
-    closeModal()
-    router.push("/");
   };
 
   const handleLoginSubmit = async (e) => {
@@ -218,6 +184,28 @@ function Navbar() {
     }
   };
 
+  const handleLogoutSubmit = (e) => {
+    e.preventDefault();
+    dispatch(clearUser());
+    dispatch(toggleAuthentication(false));
+    closeModal();
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
+    router.replace('/');
+  };
+
+  const handleSubmitActn = (e) => {
+    if (is_authenticated == true) {
+      handleLogoutSubmit(e);
+    } else {
+      handleLoginSubmit(e);
+    }
+  };
+
+
+
+ 
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
@@ -232,18 +220,18 @@ function Navbar() {
         </div>
 
         {/* Desktop About Links */}
-        <div className={styles.about}>
+        {router.asPath === "/" && <div className={styles.about}>
           <div onClick={() => handleScroll("about")}>About</div>
           <div onClick={() => handleScroll("services")}>Services</div>
           <div onClick={() => handleScroll("contact")}>Contact Us</div>
-        </div>
+        </div>}
 
         {/* Login Section */}
 
         {/* Mobile Menu Button */}
-        <div className={styles.menuButton} onClick={toggleDrawer}>
+        {router.asPath === "/" && <div className={styles.menuButton} onClick={toggleDrawer}>
           {isDrawerOpen ? <X size={30} /> : <Menu size={30} />}
-        </div>
+        </div>}
       </div>
       <div
         onClick={openModal}
@@ -254,30 +242,35 @@ function Navbar() {
           marginTop: "10px",
         }}
       >
-        {user ? <ProfileInitial />: 
-            <div onClick={openModal} className={styles.login_Contr}>
+        {user ? <ProfileInitial /> : 
+          <div onClick={openModal} className={styles.login_Contr}>
             {user ? user.name : "Login"}{" "}  <UserOutlined />
-          
-          </div>}
+          </div>
+        }
       </div>
+
       {/* Mobile Drawer */}
-      <div
+      {router.asPath === "/" && <div
         ref={drawerRef}
         className={`${styles.drawer} ${isDrawerOpen ? styles.open : ""}`}
       >
         <div onClick={() => handleScroll("about")}>About</div>
         <div onClick={() => handleScroll("services")}>Services</div>
         <div onClick={() => handleScroll("contact")}>Contact Us</div>
-      </div>
+      </div>}
 
       {/* Login Modal */}
       <dialog
         ref={modalRef}
-        className={styles.modal}
-        onClick={handleOutsideClick}
+        className={`${styles.modal} ${page_loader ? styles.modalHidden : ""}`}
+        onClick={(e) => {
+          if (e.target === modalRef.current) {
+            closeModal();
+          }
+        }}
       >
         <div className={styles.modalContent}>
-          <div onClick={handleCloseClick} className={styles.close_modal}>
+          <div onClick={closeModal} className={styles.close_modal}>
             <CloseOutlined />
           </div>
 
@@ -351,7 +344,7 @@ function Navbar() {
               ) : (
                 <ProfileInitial />
               )}
-              <form onSubmit={handleSubmitActn} className={styles.modalForm}>
+              <form onSubmit={handleSubmitActn} method="POST" className={styles.modalForm}>
                 {!is_authenticated && (
                   <>
                     <input

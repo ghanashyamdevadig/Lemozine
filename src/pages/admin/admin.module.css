@@ -1,0 +1,16 @@
+.admin{
+    margin: 150px 50px;
+}
+
+.title{
+    font-size: 30px;
+    font-weight: 600;
+    color: #2e4053;
+}
+
+
+@media (max-width: 768px) {
+    .admin{
+        margin: 30px 15px;
+    }
+}
