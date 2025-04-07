@@ -38,10 +38,11 @@
   font-size: 14px;
 }
 
-.navLinks a {
+.navLinks p {
   color: #ccc;
   text-decoration: none;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .navLinks a:hover {

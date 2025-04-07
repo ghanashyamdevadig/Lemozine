@@ -5,20 +5,30 @@ import apiService from "../api/apiService";
 
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
+    title: "Email",
+    dataIndex: "Email",
+    key: "Email",
     render: (text) => <a>{text}</a>,
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
+    title: "Distance",
+    dataIndex: "Distance",
+    key: "Distance",
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
+    title: "Phone Number",
+    dataIndex: "PhoneNumber",
+    key: "PhoneNumber",
+  },
+  {
+    title: "Price",
+    dataIndex: "Price",
+    key: "Price",
+  },
+  {
+    title: "Pickup Date & Time",
+    dataIndex: "PickupDateTime",
+    key: "PickupDateTime",
   },
 ];
 
@@ -45,12 +55,15 @@ function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
     try {
       const res = await apiService.bookings.adminbokings();
       if (res?.data) {
-        setBookingData(res.data);
+        setBookingData(res?.data?.bookings);
       }
     } catch (error) {
       console.error("Error fetching bookings:", error);
     }
   };
+
+  console.log(bookingData , "bookingData");
+  
 
   // Initial auth check
   useEffect(() => {
@@ -104,36 +117,13 @@ function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
     }
   };
 
-  const data = bookingData.length
-    ? bookingData
-    : [
-        {
-          key: "1",
-          name: "John Brown",
-          age: 32,
-          address: "New York No. 1 Lake Park",
-        },
-        {
-          key: "2",
-          name: "Jim Green",
-          age: 42,
-          address: "London No. 1 Lake Park",
-        },
-        {
-          key: "3",
-          name: "Joe Black",
-          age: 32,
-          address: "Sydney No. 1 Lake Park",
-        },
-      ];
-
   return (
     <div className={styles.admin}>
       <div className={styles.title}>Booking Details</div>
 
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={bookingData}
         scroll={{
           x: scrollable && scrollLimit ? scrollLimit : 900,
           y: scrollY,

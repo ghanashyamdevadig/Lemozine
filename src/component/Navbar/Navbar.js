@@ -58,7 +58,8 @@ function Navbar() {
     const section = document.getElementById(id);
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    } 
+    setIsDrawerOpen(false);
   };
 
   // Close drawer when clicking outside
@@ -153,21 +154,6 @@ function Navbar() {
     setFormDataLogin({ ...formDataLogin, [e.target.name]: e.target.value });
   };
 
-  const handleSubmitActn = (e) => {
-    if (is_authenticated == true) {
-      handleLogoutSubmit();
-    } else {
-      handleLoginSubmit(e);
-    }
-  };
-
-  const handleLogoutSubmit = () => {
-    dispatch(clearUser());
-    dispatch(toggleAuthentication(false));
-    closeModal();
-    router.push("/");
-  };
-
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     dispatch(togglePageLoader(true));
@@ -198,6 +184,28 @@ function Navbar() {
     }
   };
 
+  const handleLogoutSubmit = (e) => {
+    e.preventDefault();
+    dispatch(clearUser());
+    dispatch(toggleAuthentication(false));
+    closeModal();
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
+    router.replace('/');
+  };
+
+  const handleSubmitActn = (e) => {
+    if (is_authenticated == true) {
+      handleLogoutSubmit(e);
+    } else {
+      handleLoginSubmit(e);
+    }
+  };
+
+
+
+ 
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
@@ -212,18 +220,18 @@ function Navbar() {
         </div>
 
         {/* Desktop About Links */}
-        <div className={styles.about}>
+        {router.asPath === "/" && <div className={styles.about}>
           <div onClick={() => handleScroll("about")}>About</div>
           <div onClick={() => handleScroll("services")}>Services</div>
           <div onClick={() => handleScroll("contact")}>Contact Us</div>
-        </div>
+        </div>}
 
         {/* Login Section */}
 
         {/* Mobile Menu Button */}
-        <div className={styles.menuButton} onClick={toggleDrawer}>
+        {router.asPath === "/" && <div className={styles.menuButton} onClick={toggleDrawer}>
           {isDrawerOpen ? <X size={30} /> : <Menu size={30} />}
-        </div>
+        </div>}
       </div>
       <div
         onClick={openModal}
@@ -242,14 +250,14 @@ function Navbar() {
       </div>
 
       {/* Mobile Drawer */}
-      <div
+      {router.asPath === "/" && <div
         ref={drawerRef}
         className={`${styles.drawer} ${isDrawerOpen ? styles.open : ""}`}
       >
         <div onClick={() => handleScroll("about")}>About</div>
         <div onClick={() => handleScroll("services")}>Services</div>
         <div onClick={() => handleScroll("contact")}>Contact Us</div>
-      </div>
+      </div>}
 
       {/* Login Modal */}
       <dialog
@@ -336,7 +344,7 @@ function Navbar() {
               ) : (
                 <ProfileInitial />
               )}
-              <form onSubmit={handleSubmitActn} className={styles.modalForm}>
+              <form onSubmit={handleSubmitActn} method="POST" className={styles.modalForm}>
                 {!is_authenticated && (
                   <>
                     <input
