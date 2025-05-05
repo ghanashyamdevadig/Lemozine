@@ -17,10 +17,10 @@ function HomeBgCont() {
         <SearchForm />
       </div>
       <div className={styles.car_container}></div>
-      <AboutUs id="about" />
+      {/* <AboutUs id="about" />
       <OurServices id="services" />
       <FleetSection />
-      <ContactUs />
+      <ContactUs /> */}
     </div>
   );
 }

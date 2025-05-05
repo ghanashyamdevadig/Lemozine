@@ -27,10 +27,10 @@ export default function Footer() {
       {/* Navigation Links */}
       <nav className={styles.navLinks}>
         <p onClick={() =>router.push("/")}>Home</p>
-        <p  onClick={() => handleScroll("about")}>About Us</p>
-        <p  onClick={() => handleScroll("services")}>Our Services</p>
+        <p  onClick={() => router.push("/about")}>About Us</p>
+        <p  onClick={() => router.push("/services")}>Our Services</p>
         <p onClick={() =>router.push("/")}>Book a Ride</p>
-        <p onClick={() => handleScroll("contact")}>Contact Us</p>
+        <p onClick={() => router.push("/contact-us")}>Contact Us</p>
       </nav>
 
       {/* Legal Links */}

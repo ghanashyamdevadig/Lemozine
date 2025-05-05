@@ -220,11 +220,11 @@ function Navbar() {
         </div>
 
         {/* Desktop About Links */}
-        {router.asPath === "/" && <div className={styles.about}>
-          <div onClick={() => handleScroll("about")}>About</div>
-          <div onClick={() => handleScroll("services")}>Services</div>
-          <div onClick={() => handleScroll("contact")}>Contact Us</div>
-        </div>}
+        <div className={styles.about}>
+          <div onClick={() => router.push("/about")}>About</div>
+          <div onClick={()=> router.push("/services")}>Services</div>
+        <div onClick={() => router.push("/contact-us")}>Contact Us</div>
+        </div>
 
         {/* Login Section */}
 
@@ -250,14 +250,14 @@ function Navbar() {
       </div>
 
       {/* Mobile Drawer */}
-      {router.asPath === "/" && <div
+      <div
         ref={drawerRef}
         className={`${styles.drawer} ${isDrawerOpen ? styles.open : ""}`}
       >
-        <div onClick={() => handleScroll("about")}>About</div>
-        <div onClick={() => handleScroll("services")}>Services</div>
-        <div onClick={() => handleScroll("contact")}>Contact Us</div>
-      </div>}
+        <div onClick={() => router.push("/about")}>About</div>
+        <div onClick={()=> router.push("/services")}>Services</div>
+        <div onClick={() => router.push("/contact-us")}>Contact Us</div>
+      </div>
 
       {/* Login Modal */}
       <dialog
