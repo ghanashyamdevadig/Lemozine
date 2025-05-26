@@ -1,26 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./HomeBgCont.module.css";
-import SearchForm from "../SearchContainer/SearchContainer";
-import OurServices from "../OurSevices/OurServices";
-import FleetSection from "../ourFleet/OurFleet";
-import ContactUs from "../ContactUs/ContactUs";
-import AboutUs from "../AboutUs/AboutUs";
+import Carousel from "./Carousel";
+import CarouselControls from "./CarouselControls";
+import BookingForm from "./BookingForm";
 function HomeBgCont() {
-
+const [carouselNavigation, setCarouselNavigation] = useState(null);
+  
   return (
     <div className={styles.main_container}>
-      <div className={styles.title}>
-        PREMIUM CAR FOR
-        <span> SERVICES</span>
-      </div>
-      <div className={styles.search_container}>
-        <SearchForm />
-      </div>
-      <div className={styles.car_container}></div>
-      {/* <AboutUs id="about" />
-      <OurServices id="services" />
-      <FleetSection />
-      <ContactUs /> */}
+      <Carousel onNavigate={setCarouselNavigation} />
+      <CarouselControls navigation={carouselNavigation} />
+      <BookingForm />
     </div>
   );
 }

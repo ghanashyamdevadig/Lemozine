@@ -1,0 +1,59 @@
+.carSliderSec {
+  background-image: url("../../assets/images/bgImage/Section\ \(1\).webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.title_1 {
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 120px;
+  line-height: 105px;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #d7b65d;
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.title_2 {
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 120px;
+  line-height: 105px;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #000000;
+}
+
+.description {
+  font-family: "Taviraj";
+  font-weight: 300;
+  font-style: italic;
+  font-size: 24px;
+  line-height: 33.6px;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #000000;
+  padding-top: 40px;
+}
+
+.image_container {
+  margin-top: 50px;
+  padding: 0 50px !important;
+  height: 75vh;
+  opacity: 0;
+  transform: translateX(100vw);
+  transition: transform 1s ease-out, opacity 1s ease-out;
+}
+
+.image_container.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+

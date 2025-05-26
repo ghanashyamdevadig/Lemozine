@@ -1,0 +1,73 @@
+.discoverMore {
+  padding: 50px 50px;
+}
+
+.backgroundImage {
+  background-image: url("../../assets/images/bgImage/WorldBag.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding: 50px 0px;
+}
+
+.disCoverButton {
+  width: 50%;
+  height: 50px;
+  background-color: #d7b65d;
+  color: black;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0.75rem;
+  margin-top: 30px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.arrow{
+  color: black;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.leftConatiner {
+  width: 30%;
+}
+
+.rightContainer {
+  width: 70%;
+}
+
+.description {
+  font-family: "Mulish";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 27.2px;
+  letter-spacing: 0%;
+  color: #192026;
+}
+
+.title_1 {
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 44px;
+  line-height: 57.6px;
+  letter-spacing: 0%;
+  color: #d7b65d;
+}
+
+.title_2 {
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 44px;
+  line-height: 57.6px;
+  letter-spacing: 0%;
+  color: #000;
+}

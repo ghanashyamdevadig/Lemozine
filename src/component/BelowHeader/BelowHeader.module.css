@@ -1,0 +1,40 @@
+.belowHeader {
+  background-color: #192026;
+  padding: 40px 50px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  gap: 20px;
+}
+
+.title {
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 31.2px;
+  color: #d7b65d;
+}
+
+.arrow {
+  font-weight: 500;
+  font-size: 14px;
+  color: #d7b65d;
+}
+
+.desc {
+  font-family: "Mulish";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 27.2px;
+  letter-spacing: 0%;
+  color: #ffffffb1;
+  opacity: 0.8;
+}
