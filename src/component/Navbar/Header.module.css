@@ -1,4 +1,4 @@
-.navbar {
+/* .navbar {
   background-color: #2e4053;
   padding: 10px 50px;
   color: white;
@@ -50,13 +50,10 @@
 }
 
 .login {
-  /* background-color: black; */
   color: white;
   border: none;
-  /* padding: 0.5rem 1rem; */
-  /* border-radius: 12px; */
   cursor: pointer;
-  /* font-size: 1rem; */
+ 
   background-color: 'green';
 }
 
@@ -74,7 +71,7 @@
   border-radius: 8px;
   padding: 1.5rem;
   text-align: center;
-  z-index: -90000; /* Ensure this is lower than loader’s z-index */
+  z-index: -90000; 
 
 }
 .login_Contr{
@@ -151,7 +148,6 @@
   cursor: pointer;
 }
 
-/* Mobile Drawer */
 .drawer {
   position: fixed;
   top: 0;
@@ -187,7 +183,6 @@ margin-bottom: 20px;
 }
 
 
-/* Responsive Styles */
 @media (max-width: 768px) {
   .about {
     display: none;
@@ -206,4 +201,99 @@ margin-bottom: 20px;
   .menuButton {
     display: block;
   }
+} */
+
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0 50px;
+
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
 }
+
+.container {
+  margin: 0 auto;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px dashed #5d6162;
+
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoTextTop {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #facc15;
+  letter-spacing: 0.1em;
+}
+
+.logoTextBottom {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0.1em;
+}
+
+.nav {
+  display: none;
+  align-items: center;
+  gap: 4rem;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+  }
+}
+
+.navLink {
+ font-family: "Mulish";
+font-weight: 400;
+font-size: 12px;
+line-height: 27.2px;
+letter-spacing: 0%;
+text-align: center;
+text-transform: uppercase;
+
+}
+
+.navLink:hover {
+  color: #D7B65D;
+}
+
+.loginButton {
+  background-color: #D7B65D;
+  color: black;
+  font-size: 14px;
+  font-weight: 500;
+  height: 52px;
+  width: 160px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: "Taviraj";
+}
+

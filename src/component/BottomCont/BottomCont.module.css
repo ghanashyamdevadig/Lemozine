@@ -1,0 +1,105 @@
+.comfortSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  background-color: #192026;
+  color: #fff;
+  height: 80vh;
+  padding: 0px 50px;
+  gap: 40px;
+}
+
+.imageContainer {
+  width: 50%;
+  height: 650px;
+  display: flex;
+  justify-content: end;
+}
+
+.image {
+  width: 500px !important;
+  height: 550px;
+}
+
+.content {
+  flex: 1;
+  max-width: 50%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.content h2 {
+  font-size: 32px;
+  line-height: 1.4;
+  color: #fff;
+  margin-bottom: 40px;
+}
+
+.content h2 span {
+  color: #d7b65d;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.feature h4 {
+  color: #d7b65d;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.feature p {
+  font-size: 14px;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.title {
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 27.2px;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #d7b65d;
+}
+
+.description {
+  font-family: "Taviraj";
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .comfortSection {
+    flex-direction: column;
+  }
+
+  .imageContainer,
+  .content {
+    max-width: 100%;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+}

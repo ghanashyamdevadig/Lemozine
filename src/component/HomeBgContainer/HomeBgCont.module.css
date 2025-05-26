@@ -1,8 +1,10 @@
 .main_container{
-  margin-top: 150px;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
-.car_container{
+/* .car_container{
     background-image: url("../../assets/images/bgImage/car.png");
     height: 65vh; 
     background-position: center; 
@@ -20,8 +22,7 @@
     margin-top: 30px;
     font-weight: 700;
     font-family: BODONI MODA;
-    /* opacity: 0;
-    animation: slideIn 1s ease-out forwards; */
+    
 }
 
 @keyframes slideIn {
@@ -58,4 +59,4 @@
     .main_container{
       margin-top: 0px;
     }
-}
+} */
