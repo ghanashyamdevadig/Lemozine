@@ -9,8 +9,8 @@
 .left {
  width: 50%;
  display: flex;
- justify-content: end;
- align-items: end;
+ /* justify-content: end;
+ align-items: end; */
  flex-direction: column;
 }
 
@@ -33,9 +33,7 @@ font-size: 36px;
 line-height: 43px;
 letter-spacing: 0%;
 display: flex;
-justify-content: center;
 gap: 10px;
-margin-left: -100px !important;
 }
 
 .phoneNumber {

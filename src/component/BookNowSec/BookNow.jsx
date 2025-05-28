@@ -11,64 +11,72 @@ const data = [
     {
         image:sedan,
         title:"Business Sedan",
-        description:"Elegant sedans—sophisticated comfort for business trips and intimate outings.",
+        description:"Comfortable and affordable ride.",
+        bags:"Luggage Space: 3 Large Bags",
         nested:[
             {
                 seats:"4 seats",
                 svg:"/svgSheet/seats.svg",
             },
              {
-                seats:"Diesel",
-                svg:"/svgSheet/Diesel.svg",
+                seats:"AC",
+                svg:"/svgSheet/ac.svg",
             },
              {
-                seats:"Mechanic",
-                svg:"/svgSheet/mechanic.svg",
+                seats:"Bluetooth",
+                svg:"/svgSheet/bluetooth.svg",
             }, 
         ],
     },
 {
         image:suv,
         title:"Business SUV",
-        description:"Luxury SUVs—spacious, refined, and perfect for family trips or group outings.",
+        description:"Luxurious experience for your journey.",
+        bags:"Luggage Space: 3 Large Bags",
             nested:[
             {
                 seats:"4 seats",
                 svg:"/svgSheet/seats.svg",
             },
-             {
-                seats:"Diesel",
-                svg:"/svgSheet/Diesel.svg",
+            {
+                seats:"AC",
+                svg:"/svgSheet/ac.svg",
             },
              {
-                seats:"Mechanic",
-                svg:"/svgSheet/mechanic.svg",
+                seats:"Bluetooth",
+                svg:"/svgSheet/bluetooth.svg",
             }, 
         ],
     },
     {
         image:vip,
         title:"VIP",
-        description:"Premium limousines—ultimate luxury for special occasions and corporate events.",
+        description:"Exclusive, first-class service.",
+        bags:"Luggage Space: 3 Large Bags",
             nested:[
             {
                 seats:"4 seats",
                 svg:"/svgSheet/seats.svg",
             },
-             {
-                seats:"Diesel",
-                svg:"/svgSheet/Diesel.svg",
+            {
+                seats:"AC",
+                svg:"/svgSheet/ac.svg",
             },
              {
-                seats:"Mechanic",
-                svg:"/svgSheet/mechanic.svg",
+                seats:"Bluetooth",
+                svg:"/svgSheet/bluetooth.svg",
             }, 
         ],
     },
 ]
 
 function BookNow() {
-  return (
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};  return (
     <div className={styles.book_container}>
         <div className={styles.book_header}>
             {data?.map((item, index) => {
@@ -80,6 +88,7 @@ function BookNow() {
                     <div className={styles.book_text}>
                         <h2 className={styles.title}>{item.title}</h2>
                         <p className={styles.description}>{item.description}</p>
+                        <p className={styles.bags}>{item.bags}</p>
                         <div className={styles.book_array}>
                             {item?.nested?.map((arr, idx) => (
                                 <div className={styles.book_array_item} key={idx}>
@@ -90,7 +99,7 @@ function BookNow() {
                             ))}
                         </div>
                     </div>
-                    <button className={styles.bookNowButton}>
+                    <button className={styles.bookNowButton} onClick={scrollToTop}>
                         Book Now <span className={styles.arrow}><ArrowRightOutlined /></span>
                     </button>
                 </div>

@@ -31,12 +31,17 @@ function CarSliderSec() {
   }, []);
 
   return (
-    <div className={styles.carSliderSec} ref={imageRef}>
+    <div className={styles.carSliderSec} >
       <div className={styles.main_container}>
-        <p className={styles.title_1}>Incredible</p>
-        <p className={styles.title_2}>comfort</p>
-        <p className={styles.description}>
-          We value the time and quality of travel for each of our clients
+        <p className={styles.title_1}>About</p>
+        <p className={styles.title_2} >Mass Livery</p>
+        <p className={styles.description} ref={imageRef}>
+          At our site, we are dedicated to providing a seamless and memorable
+          transportation experience for our clients. Our team of professional
+          chauffeurs and staff are committed to exceeding your expectations,
+          ensuring every journey with us is exceptional. We take pride in our
+          attention to detail and personalized service, making us a trusted
+          choice for discerning customers.
         </p>
       </div>
       <div
