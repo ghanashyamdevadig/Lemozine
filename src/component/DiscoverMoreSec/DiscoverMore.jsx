@@ -19,7 +19,7 @@ function DiscoverMore() {
             <button className={styles.disCoverButton}>Discover More <span className={styles.arrow}><ArrowRightOutlined /></span></button>
           </div>
           <div className={styles.rightConatiner}>
-            <Image src={carImage} width={840} height={260} />
+            <Image src={carImage} width={840} height={260} className={styles.image} />
           </div>
         </div>
       </div>

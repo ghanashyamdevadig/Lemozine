@@ -7,11 +7,11 @@
 }
 
 .left {
- width: 50%;
- display: flex;
- /* justify-content: end;
+  width: 50%;
+  display: flex;
+  /* justify-content: end;
  align-items: end; */
- flex-direction: column;
+  flex-direction: column;
 }
 
 .right {
@@ -27,42 +27,40 @@
 }
 
 .icon {
- font-family: "Taviraj";
-font-weight: 500;
-font-size: 36px;
-line-height: 43px;
-letter-spacing: 0%;
-display: flex;
-gap: 10px;
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 43px;
+  letter-spacing: 0%;
+  display: flex;
+  gap: 10px;
 }
 
 .phoneNumber {
   color: #d7b65d;
-   font-family: "Taviraj";
-font-weight: 500;
-font-size: 36px;
-line-height: 43px;
-letter-spacing: 0%;
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 43px;
+  letter-spacing: 0%;
 }
 
 .description {
-font-family: "Taviraj";
-font-weight: 500;
-font-size: 36px;
-line-height: 43px;
-letter-spacing: 0%;
-color: #1a1a1a  ;
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 43px;
+  letter-spacing: 0%;
+  color: #1a1a1a;
 }
-
 
 .highlight {
   color: #d7b65d;
   font-family: "Taviraj";
-font-weight: 500;
-font-size: 36px;
-line-height: 43px;
-letter-spacing: 0%;
-
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 43px;
+  letter-spacing: 0%;
 }
 
 .form {
@@ -83,8 +81,8 @@ letter-spacing: 0%;
   font-size: 14px;
   border: 1px solid #ccc;
   resize: vertical;
-  color: #333; 
-  background-color: #fff; 
+  color: #333;
+  background-color: #fff;
 }
 
 .form button {
@@ -107,7 +105,43 @@ letter-spacing: 0%;
     flex-direction: column;
   }
 
+  .contactSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 15px 40px 15px;
+    gap: 10px;
+  }
+
+  .left {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
   .right {
     width: 100%;
+  }
+
+  .icon {
+    font-size: 20px;
+    line-height: 23px;
+  }
+  .phoneNumber {
+    font-size: 20px;
+  }
+
+  .description {
+    font-size: 20px;
+  }
+
+  .highlight {
+    font-size: 20px;
+  }
+
+  .form textarea {
+    min-height: 100px;
   }
 }

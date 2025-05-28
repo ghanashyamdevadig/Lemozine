@@ -58,3 +58,38 @@
   opacity: 1;
 }
 
+@media (max-width: 768px) {
+.carSliderSec {
+  background-image: url("../../assets/images/bgImage/Section\ \(1\).webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  position: relative;
+  min-height: auto;
+  overflow: hidden;
+}
+
+  .title_1 {
+    font-size: 30px;
+    line-height: 35px;
+    padding-top: 20px;
+  padding-bottom: 10px;
+  }
+
+  .title_2 {
+    font-size: 46px;
+    line-height: 42px;
+  }
+
+  .description {
+    font-size: 16px;
+    line-height: 24px;
+    padding: 20px;
+  }
+
+  .image_container {
+    height: auto;
+    padding: 0 !important;
+  }
+}

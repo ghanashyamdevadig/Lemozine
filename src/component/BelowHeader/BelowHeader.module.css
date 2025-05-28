@@ -38,3 +38,35 @@
   color: #ffffffb1;
   opacity: 0.8;
 }
+
+@media(max-width: 768px) {
+  .belowHeader {
+    padding: 20px;
+  }
+
+  .container {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card {
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .arrow {
+    font-size: 12px;
+  }
+
+  .desc {
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+  }
+}

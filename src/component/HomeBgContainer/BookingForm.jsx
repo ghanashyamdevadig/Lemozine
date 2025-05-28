@@ -17,6 +17,7 @@ const BookingForm = () => {
   };
 
   return (
+    <div className={styles.bookingForm}>
     <div className={styles.container}>
       <div className={styles.formCard}>
 
@@ -71,6 +72,7 @@ const BookingForm = () => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

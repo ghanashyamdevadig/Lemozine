@@ -11,8 +11,8 @@ const ComfortSection = () => {
       </div>
       <div className={styles.content}>
         
-        <h2>
-          We make sure that <span>your every trip</span> is comfortable
+        <h2 className={styles.heading}>
+         Committed to making every  <span>ride a comfortable one.</span> 
         </h2>
         <div className={styles.featuresGrid}>
           <div className={styles.feature}>
