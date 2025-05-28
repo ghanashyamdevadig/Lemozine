@@ -31,3 +31,18 @@
   background-color: #000;
 }
 
+@media (max-width: 768px) {
+  .container {
+    height: 100vh;
+  }
+  
+  .slide {
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .image {
+    object-fit: cover;
+    height: 100%;
+  }
+}
+

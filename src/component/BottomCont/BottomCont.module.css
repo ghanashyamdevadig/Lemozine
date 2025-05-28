@@ -92,11 +92,28 @@
 @media (max-width: 768px) {
   .comfortSection {
     flex-direction: column;
+     height: auto;
+  padding: 40px 15px;
+  gap: 10px;
   }
 
-  .imageContainer,
+  .heading{
+    font-family: "Taviraj";
+font-weight: 500;
+font-size: 30px;
+line-height: 39.6px;
+letter-spacing: 0%;
+text-align: center;
+
+  }
+
+
+  .imageContainer{
+    display: none;
+  }
   .content {
     max-width: 100%;
+    padding: 0px;
   }
 
   .featuresGrid {
