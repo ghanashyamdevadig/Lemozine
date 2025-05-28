@@ -6,12 +6,12 @@
   width: 100%;
   background-color: #192026;
   color: #fff;
-  height: 80vh;
+  height: 600px;
   padding: 0px 50px;
   gap: 40px;
 }
 
-.imageContainer {
+.imageContainer { 
   width: 50%;
   height: 650px;
   display: flex;

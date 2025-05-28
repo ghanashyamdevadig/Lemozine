@@ -14,12 +14,12 @@ const data = [
   },
   {
     image: image2,
-    title: "Business Transfers",
+    title: "Group Transportation",
     desc: "Pellentesque semper dui eget fermentum sagittis. Cur abitur bibe ndum id ante.",
   },
   {
     image: image3,
-    title: "Events & Wedding",
+    title: "VIP Service",
     desc: "Pellentesque semper dui eget fermentum sagittis. Cur abitur bibe ndum id ante.",
   },
 ];

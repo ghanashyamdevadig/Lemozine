@@ -46,6 +46,17 @@
   margin-top: 20px;
 }
 
+.bags {
+  color: #d7b65d;
+  font-family: "Taviraj";
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-align: center;
+  margin-top: 10px;
+}
+
 .book_array {
   display: flex;
   justify-content: space-between;
@@ -89,7 +100,7 @@
   transition: background-color 0.3s;
 }
 
-.arrow{
-    font-weight: 500;
+.arrow {
+  font-weight: 500;
   font-size: 14px;
 }
