@@ -105,7 +105,7 @@ const Carousel = ({ onNavigate }) => {
           <Image
             src={isMobile ? slide.mobile : slide.image}
             alt={slide.title}
-            className={styles.image}
+            className={isMobile ? " " : styles.image}
             fill
             priority={index === 0}
           />
