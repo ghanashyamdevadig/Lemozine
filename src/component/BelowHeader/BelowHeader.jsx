@@ -10,17 +10,17 @@ const data = [
   {
     image: image1,
     title: "Airport Transfers",
-    desc: "Pellentesque semper dui eget fermentum sagittis. Cur abitur bibe ndum id ante.",
+    desc: "Effortless airport to hotel transfers—hassle-free and comfortable.",
   },
   {
     image: image2,
     title: "Group Transportation",
-    desc: "Pellentesque semper dui eget fermentum sagittis. Cur abitur bibe ndum id ante.",
+    desc: "Group travel made easy—luxury limousines for any outing or event.",
   },
   {
     image: image3,
     title: "VIP Service",
-    desc: "Pellentesque semper dui eget fermentum sagittis. Cur abitur bibe ndum id ante.",
+    desc: "Luxury VIP limousines—perfect for special occasions, corporate events, and more.",
   },
 ];
 

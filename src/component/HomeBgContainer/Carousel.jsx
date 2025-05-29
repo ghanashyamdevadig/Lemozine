@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "./Carousel.module.css";
-import Car1 from "../../assets/images/bgImage/Component 1.webp";
-import Car2 from "../../assets/images/bgImage/Component 1_3.webp";
-import Car3 from "../../assets/images/bgImage/Component 1_4.webp";
-import Car4 from "../../assets/images/bgImage/Component 1_5.webp";
-import mobile1 from "../../assets/images/bgImage/image 2.webp";
-import mobile2 from "../../assets/images/bgImage/image 3.webp";
-import mobile3 from "../../assets/images/bgImage/image 4.webp";
-import mobile4 from "../../assets/images/bgImage/image 5.webp";
+import Car1 from "../../assets/images/bgImage/Image.png";
+import Car2 from "../../assets/images/bgImage/Component 1.png";
+import Car3 from "../../assets/images/bgImage/Component 1 (1).png";
+import Car4 from "../../assets/images/bgImage/Component 1 (2).png";
+import mobile1 from "../../assets/images/bgImage/image 2.png";
+import mobile2 from "../../assets/images/bgImage/image 3.png";
+import mobile3 from "../../assets/images/bgImage/image 4.png";
+import mobile4 from "../../assets/images/bgImage/image 5.png";
 import Image from "next/image";
 
 const Carousel = ({ onNavigate }) => {
