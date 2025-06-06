@@ -3,7 +3,9 @@ import { useRouter } from "next/router";
 import { loadStripe } from "@stripe/stripe-js";
 import styles from "./payment.module.css";
 import apiService from "../api/apiService";
-
+import sedan from "../../assets/images/bgImage/Black-BMW-PNG-HD 1.webp";
+import suv from "../../assets/images/bgImage/BMW-X7-Download-Free-PNG 1.webp";
+import vip from "../../assets/images/bgImage/stretch-limousine.png 1.webp";
 // Initialize Stripe with your public key
 const stripePromise = loadStripe("pk_test_51R6BqeFDa5LOpFSn5VdfMVGzuWDboUyjY8rPZu2aIzjTzIOHYaZgf7FTdHix1P7ikMvs4lPdLiFgxLCN5XtMiduc00f4FwkdLR");
 

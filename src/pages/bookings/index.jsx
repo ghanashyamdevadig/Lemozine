@@ -5,6 +5,9 @@ import styles from "./bookings.module.css";
 import apiService from "../api/apiService";
 import { togglePageLoader, updateBookingData } from "@/redux/store/userSlice";
 import ToastService from "@/config/toast";
+import HomeBgCont from "@/component/HomeBgContainer/HomeBgCont";
+import BookNow from "@/component/BookNowSec/BookNow";
+import BookingHeaderText from "@/component/HomeBgContainer/BookingHeaderText";
 
 const carOptionsData = (carPrices) => [
   {
@@ -124,8 +127,11 @@ const CarSelectionPage = () => {
   };
 
   return (
-    <div className={styles.carSelectionPage}>
-      <section className={styles.carSelectionHeader}>
+    <div >
+      {/* <HomeBgCont isBooking={true}/> */}
+      <BookingHeaderText/>
+      <BookNow isClick={true} handleCarSelect={handleCarSelect} handleProceedToPayment={handleProceedToPayment}/>
+      {/* <section className={styles.carSelectionHeader}>
         <h1>Select Your Car</h1>
         <p>Choose the car type that suits your needs.</p>
       </section>
@@ -185,7 +191,7 @@ const CarSelectionPage = () => {
         <button className={styles.submitBtn} onClick={handleProceedToPayment}>
           Proceed to Payment
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

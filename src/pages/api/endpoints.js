@@ -14,6 +14,9 @@ const endpoints = {
     admin_bookings:"/admin/bookings",
     create_checkout_session:'/create-checkout-session'
   },
+  generic:{
+    staticLoadData:'/staticLoadData'
+  }
 };
 
 export default endpoints;
