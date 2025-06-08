@@ -70,6 +70,7 @@ const CheckoutForm = ({
 
   return (
     <div className={styles.paymentForm}>
+   
       {error && <div className={styles.errorMessage}>{error}</div>}
       <button
         className={styles.payButton}
@@ -107,7 +108,19 @@ const PaymentPage = () => {
 
   return (
     <div className={styles.paymentPage}>
-      <div style={{ marginTop: "100px" }}>
+      {/* <h2 className={{ marginTop: "10rem", textAlign: "center" }}>
+        Confirm Your Booking
+      </h2> */}
+      <div
+        style={{
+          marginTop: "100px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          // backgroundColor: "red",
+        }}
+      >
         <BookNow type={car} isPayment={true} carOptionsData={carPrices} />
       </div>
       <div

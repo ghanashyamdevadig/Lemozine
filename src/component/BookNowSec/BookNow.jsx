@@ -79,7 +79,7 @@ function BookNow({
               key={index}
               onClick={() => {
                 isClick && setSelectedIndex(index);
-                handleCarSelect(item?.type);
+                isClick && handleCarSelect(item?.type);
                 console.log(item, "item");
               }}
             >
