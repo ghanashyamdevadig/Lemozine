@@ -4,9 +4,12 @@ import styles from './Header.module.css';
 import Image from 'next/image';
 import logo from '../../assets/images/logo/massliveryLogo.png';
 import { Menu, X } from 'lucide-react'; // Menu and Close icons
+import LoginSignupModal from '../LoginSignUp/LoginSignupModal';
 
 const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   return (
     <header className={styles.header}>
@@ -23,7 +26,7 @@ const Header = () => {
             <a href="#" className={styles.navLink}>HOME</a>
             <a href="#" className={styles.navLink}>ABOUT US</a>
             <a href="#" className={styles.navLink}>CONTACTS</a>
-            <button className={styles.loginButton}>Login</button>
+            <button className={styles.loginButton}  onClick={() => setIsModalOpen(true)}>Login</button>
           </nav>
 
           {/* Mobile Menu Icon */}
@@ -41,8 +44,9 @@ const Header = () => {
         <a href="#" className={styles.drawerLink}>HOME</a>
         <a href="#" className={styles.drawerLink}>ABOUT US</a>
         <a href="#" className={styles.drawerLink}>CONTACTS</a>
-        <button className={styles.drawerLogin}>Login</button>
+        <button className={styles.drawerLogin} onClick={() => setIsModalOpen(true)}>Login</button>
       </div>
+       <LoginSignupModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </header>
   );
 };

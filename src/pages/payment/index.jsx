@@ -1,32 +1,44 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { loadStripe } from "@stripe/stripe-js";
 import styles from "./payment.module.css";
 import apiService from "../api/apiService";
-import sedan from "../../assets/images/bgImage/Black-BMW-PNG-HD 1.webp";
-import suv from "../../assets/images/bgImage/BMW-X7-Download-Free-PNG 1.webp";
-import vip from "../../assets/images/bgImage/stretch-limousine.png 1.webp";
-// Initialize Stripe with your public key
-const stripePromise = loadStripe("pk_test_51R6BqeFDa5LOpFSn5VdfMVGzuWDboUyjY8rPZu2aIzjTzIOHYaZgf7FTdHix1P7ikMvs4lPdLiFgxLCN5XtMiduc00f4FwkdLR");
+import BookNow from "@/component/BookNowSec/BookNow";
+import { useSelector } from "react-redux";
+import ToastService from "@/config/toast";
+import LoginSignupModal from "@/component/LoginSignUp/LoginSignupModal";
 
-const CheckoutForm = ({ price, car, onPaymentStatus }) => {
+const stripePromise = loadStripe(
+  "pk_test_51R6BqeFDa5LOpFSn5VdfMVGzuWDboUyjY8rPZu2aIzjTzIOHYaZgf7FTdHix1P7ikMvs4lPdLiFgxLCN5XtMiduc00f4FwkdLR"
+);
+
+const CheckoutForm = ({
+  price,
+  car,
+  onPaymentStatus,
+  isModalOpen,
+  setIsModalOpen,
+}) => {
   const [stripe, setStripe] = useState(null);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(false);
 
+  const { is_authenticated } = useSelector((state) => state.user);
+
   useEffect(() => {
-    const initStripe = async () => {
-      const stripeInstance = await stripePromise;
-      setStripe(stripeInstance);
-    };
-    initStripe();
+    stripePromise.then(setStripe);
   }, []);
 
-  const handleCheckout = async () => {
-    try {
-      setProcessing(true);
-      onPaymentStatus("Initializing payment...", true);
+  const handleCheckout = useCallback(async () => {
+    if (!is_authenticated) {
+      setIsModalOpen(true);
+      ToastService?.showError("Please login before paying");
+      return;
+    }
+    setProcessing(true);
+    onPaymentStatus("Initializing payment...", true);
 
+    try {
       const data = {
         currency: "usd",
         unit_amount: parseFloat(price) * 100,
@@ -34,7 +46,6 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
       };
 
       const res = await apiService.bookings.checkoutSession(data);
-      console.log("Stripe session:", res);
 
       if (res?.data?.session_id) {
         const result = await stripe.redirectToCheckout({
@@ -50,13 +61,12 @@ const CheckoutForm = ({ price, car, onPaymentStatus }) => {
         onPaymentStatus("Unable to create a checkout session.", false);
       }
     } catch (err) {
-      console.error("Checkout error:", err);
       setError("Payment initialization failed.");
       onPaymentStatus("Payment initialization failed.", false);
     } finally {
       setProcessing(false);
     }
-  };
+  }, [is_authenticated, price, car, stripe, onPaymentStatus, setIsModalOpen]);
 
   return (
     <div className={styles.paymentForm}>
@@ -76,51 +86,45 @@ const PaymentPage = () => {
   const router = useRouter();
   const [car, setCar] = useState("");
   const [price, setPrice] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const carPrices = useSelector((state) => state.user?.car_prices);
 
   useEffect(() => {
-    if (router?.query) {
-      setCar(router.query.car || "");
-      setPrice(router.query.price || "");
-      setImageUrl(router.query.imageUrl || "");
-    }
+    const { car = "", price = "" } = router.query || {};
+    setCar(car);
+    setPrice(price);
   }, [router.query]);
 
   const formattedPrice = price ? parseFloat(price).toFixed(2) : "0.00";
 
-  const handlePaymentStatus = (message, isProcessing) => {
+  const handlePaymentStatus = useCallback((message, isProcessing) => {
     setPaymentStatus(message);
     setProcessing(isProcessing);
-  };
+  }, []);
 
   return (
     <div className={styles.paymentPage}>
-      <section className={styles.paymentHeader}>
-        <h1>Complete Your Booking</h1>
-        <p>Please review your selection and proceed to secure payment.</p>
-      </section>
-
-      <section className={styles.paymentSummary}>
-        <div className={styles.paymentSummaryCard}>
-          <div className={styles.carImageContainer}>
-            <img src={imageUrl} alt={car} className={styles.carImage} />
-          </div>
-          <div className={styles.carDetails}>
-            <h3>{car}</h3>
-            <div className={styles.priceTag}>
-              ${formattedPrice} <small>total</small>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <CheckoutForm
-        price={formattedPrice}
-        car={car}
-        onPaymentStatus={handlePaymentStatus}
-      />
+      <div style={{ marginTop: "100px" }}>
+        <BookNow type={car} isPayment={true} carOptionsData={carPrices} />
+      </div>
+      <div
+        style={{
+          marginTop: "100px",
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
+        <CheckoutForm
+          price={formattedPrice}
+          car={car}
+          onPaymentStatus={handlePaymentStatus}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      </div>
 
       {paymentStatus && (
         <section
@@ -131,6 +135,8 @@ const PaymentPage = () => {
           <p>{paymentStatus}</p>
         </section>
       )}
+
+      <LoginSignupModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </div>
   );
 };

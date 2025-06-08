@@ -114,14 +114,17 @@ const BookingForm = () => {
             km,
           };
 
-          console.log(res, searchResult, "test location");
+          console.log(res?.data, searchResult, "test location");
 
           dispatch(setBookingDetails(searchResult));
 
           if (res?.status == 200) {
-            dispatch(setCarPrices(res));
-            navigate.push("/bookings");
+            console.log("Checked Data");
+           
+
+            dispatch(setCarPrices(res?.data));
             dispatch(togglePageLoader(false));
+            navigate.push("/bookings");
           } else {
             ToastService.showError("Something went wrong please tr again");
             dispatch(togglePageLoader(false));
@@ -131,7 +134,7 @@ const BookingForm = () => {
     });
   };
 
-  const handleBookNow = async () => {
+const handleBookNow = async () => {
     // Validation
     if (!pickupLocation || !pickupPlaceId) {
       ToastService?.showError(
@@ -150,15 +153,13 @@ const BookingForm = () => {
       return;
     }
 
-    console.log("Booking:", {
-      pickupLocation,
-      pickupPlaceId,
-      dropLocation,
-      dropPlaceId,
-      pickupDate: pickupDate ? pickupDate.format("YYYY-MM-DD HH:mm") : null,
-    });
-    const distanceResult = await calculateDistance(pickupPlaceId, dropPlaceId);
-  };
+    dispatch(togglePageLoader(true));
+
+      await calculateDistance(pickupPlaceId, dropPlaceId);
+
+
+   
+};
 
   return (
     <div className={styles.bookingForm}>

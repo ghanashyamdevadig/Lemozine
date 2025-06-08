@@ -1,0 +1,94 @@
+.modal {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+  border: none;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modalContent {
+  padding: 20px;
+  background: #f5f5f5;
+  position: relative;
+  font-family: "Taviraj";
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 26px;
+  font-family: "Taviraj";
+  color: #101828;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form input {
+  margin-top: 12px;
+  margin-bottom: 5px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #fff;
+  outline: none;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.form label {
+  color: #344054;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-family: "Taviraj";
+}
+
+.form button {
+  margin-top: 30px;
+  background: #d7b65d;
+  color: #000;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.link {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.trigger {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.linklabel {
+  margin-top: 10px;
+  color: #757575;
+  text-align: center;
+}
+.link {
+  margin-top: 10px;
+  color: #d7b65d;
+  text-align: center;
+}

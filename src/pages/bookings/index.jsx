@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./bookings.module.css";
@@ -9,42 +9,10 @@ import HomeBgCont from "@/component/HomeBgContainer/HomeBgCont";
 import BookNow from "@/component/BookNowSec/BookNow";
 import BookingHeaderText from "@/component/HomeBgContainer/BookingHeaderText";
 
-const carOptionsData = (carPrices) => [
-  {
-    type: "Normal",
-    basePrice: carPrices?.data["Normal"],
-    description: "Comfortable and affordable ride.",
-    imageUrl:
-      "https://imgd.aeplcdn.com/664x374/n/cw/ec/131249/eqs-exterior-right-front-three-quarter-6.jpeg?isig=0&q=80",
-    features: "AC, Bluetooth, GPS, Comfortable Seating",
-    maxPassengers: 4,
-    luggageSpace: "2 Large Bags",
-  },
-  {
-    type: "Premium",
-    basePrice: carPrices?.data["Premium"],
-    description: "Luxurious experience for your journey.",
-    imageUrl:
-      "https://imgd.aeplcdn.com/664x374/n/cw/ec/169989/macan-turbo-ev-exterior-right-front-three-quarter.jpeg?isig=0&q=80",
-    features: "Leather Seats, Premium Sound System, Sunroof",
-    maxPassengers: 4,
-    luggageSpace: "3 Large Bags",
-  },
-  {
-    type: "VIP",
-    basePrice: carPrices?.data["VIP"],
-    description: "Exclusive, first-class service.",
-    imageUrl:
-      "https://imgd.aeplcdn.com/664x374/n/cw/ec/132513/7-series-exterior-right-front-three-quarter-3.jpeg?isig=0&q=80",
-    features: "Massage Seats, Private Driver, Executive Lounge",
-    maxPassengers: 4,
-    luggageSpace: "4 Large Bags",
-  },
-];
-
 const CarSelectionPage = () => {
   const [selectedCar, setSelectedCar] = useState(null);
   const [price, setPrice] = useState(null);
+  const [carOptionsData, setCarOptionsData] = useState([]);
   const router = useRouter();
   const dispatch = useDispatch();
   const { query } = router;
@@ -53,11 +21,50 @@ const CarSelectionPage = () => {
   const carPrices = useSelector((state) => state.user?.car_prices);
   const bookingDetails = useSelector((state) => state.user?.booking_details);
 
-  const carOptions = carOptionsData(carPrices);
   const distance = parseFloat(query.distance) || 0;
 
+  // Helper to generate car options array
+  const generateCarOptionsData = (carPrices) => [
+    {
+      type: "Normal",
+      basePrice: carPrices?.Normal,
+      description: "Comfortable and affordable ride.",
+      imageUrl:
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/131249/eqs-exterior-right-front-three-quarter-6.jpeg?isig=0&q=80",
+      features: "AC, Bluetooth, GPS, Comfortable Seating",
+      maxPassengers: 4,
+      luggageSpace: "2 Large Bags",
+    },
+    {
+      type: "Premium",
+      basePrice: carPrices?.Premium,
+      description: "Luxurious experience for your journey.",
+      imageUrl:
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/169989/macan-turbo-ev-exterior-right-front-three-quarter.jpeg?isig=0&q=80",
+      features: "Leather Seats, Premium Sound System, Sunroof",
+      maxPassengers: 4,
+      luggageSpace: "3 Large Bags",
+    },
+    {
+      type: "VIP",
+      basePrice: carPrices?.VIP,
+      description: "Exclusive, first-class service.",
+      imageUrl:
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/132513/7-series-exterior-right-front-three-quarter-3.jpeg?isig=0&q=80",
+      features: "Massage Seats, Private Driver, Executive Lounge",
+      maxPassengers: 4,
+      luggageSpace: "4 Large Bags",
+    },
+  ];
+
+  useEffect(() => {
+    if (carPrices) {
+      setCarOptionsData(generateCarOptionsData(carPrices));
+    }
+  }, [carPrices]);
+
   const calculatePrice = (carType) => {
-    const car = carOptions.find((car) => car.type === carType);
+    const car = carOptionsData.find((car) => car.type === carType);
     if (car) setPrice(car.basePrice * distance);
   };
 
@@ -74,7 +81,7 @@ const CarSelectionPage = () => {
       return;
     }
 
-    const priceValue = carPrices?.data[selectedCar];
+    const priceValue = carPrices[selectedCar];
     if (!priceValue) {
       dispatch(togglePageLoader(false));
       ToastService.showError("Invalid car price. Please try again.");
@@ -92,106 +99,37 @@ const CarSelectionPage = () => {
       phone_number: userInfo?.phone,
       booking_type: selectedCar,
     };
-    console.log(bookingData,"bookingData setting")
     dispatch(updateBookingData(bookingData));
     dispatch(togglePageLoader(false));
-    const car = carOptions.find((car) => car.type === selectedCar);
+    const car = carOptionsData.find((car) => car.type === selectedCar);
 
+    const d_bookingData = {
+      car: selectedCar,
+      price: priceValue,
+      imageUrl: car.imageUrl,
+      description: car.description,
+      maxPassengers: car.maxPassengers,
+      luggageSpace: car.luggageSpace,
+      features: car.features,
+    };
+    console.log(d_bookingData, "d_bookingData");
     router.push({
       pathname: "/payment",
-      query: {
-        car: selectedCar,
-        price: priceValue,
-        imageUrl: car.imageUrl,
-        description: car.description,
-        maxPassengers: car.maxPassengers,
-        luggageSpace: car.luggageSpace,
-        features: car.features,
-      },
+      query: d_bookingData,
     });
-    // try {
-    //   const res = await apiService.bookings.booking(bookingData);
-    //   console.log(res, "res for test");
-    //   if (res?.status == 200) {
-
-    //   } else {
-    //     ToastService.showError("Booking failed. Please try again.");
-    //   }
-    // } catch (error) {
-    //   console.error("Booking Error:", error);
-    //   ToastService.showError("An error occurred. Please try again.");
-    // }
-    // finally{
-    //   dispatch(togglePageLoader(false));
-    // }
   };
 
   return (
-    <div >
-      {/* <HomeBgCont isBooking={true}/> */}
-      <BookingHeaderText/>
-      <BookNow isClick={true} handleCarSelect={handleCarSelect} handleProceedToPayment={handleProceedToPayment}/>
-      {/* <section className={styles.carSelectionHeader}>
-        <h1>Select Your Car</h1>
-        <p>Choose the car type that suits your needs.</p>
-      </section>
+    <div>
 
-      <section className={styles.carOptions}>
-        {carOptions.map((car) => (
-          <div
-            key={car.type}
-            className={`${styles.carOption} ${
-              selectedCar === car.type ? styles.carOptionSelected : ""
-            }`}
-            onClick={() => handleCarSelect(car.type)}
-          >
-            <div className={styles.carOptionCard}>
-              <img
-                src={car.imageUrl}
-                alt={car.type}
-                className={styles.carImage}
-              />
-              <div className={styles.carDetailsContainer}>
-                <h2>{car.type}</h2>
-                <p>{car.description}</p>
-                <p>
-                  <strong>Max Passengers:</strong> {car.maxPassengers}
-                </p>
-                <p>
-                  <strong>Luggage Space:</strong> {car.luggageSpace}
-                </p>
-                <p>
-                  <strong>Features:</strong> {car.features}
-                </p>
-                <p>
-                  <strong>Price per Unit Distance:</strong> ${car.basePrice}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      {price && (
-        <section className={styles.priceSummary}>
-          <h3>Your Selection</h3>
-          <p>Car: {selectedCar}</p>
-          <p>Estimated Price: ${price.toFixed(2)}</p>
-        </section>
-      )}
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTops: "20px",
-        }}
-      >
-        <button className={styles.submitBtn} onClick={handleProceedToPayment}>
-          Proceed to Payment
-        </button>
-      </div> */}
+      <BookingHeaderText />
+      <BookNow
+        isClick={true}
+        handleCarSelect={handleCarSelect}
+        handleProceedToPayment={handleProceedToPayment}
+        carOptionsData={carPrices}
+      />
+     
     </div>
   );
 };

@@ -45,7 +45,14 @@ const data = [
   },
 ];
 
-function BookNow({ isClick, handleCarSelect, handleProceedToPayment }) {
+function BookNow({
+  isClick,
+  handleCarSelect,
+  handleProceedToPayment,
+  carOptionsData,
+  isPayment,
+  type,
+}) {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const scrollToTop = () => {
@@ -55,10 +62,14 @@ function BookNow({ isClick, handleCarSelect, handleProceedToPayment }) {
     });
   };
 
+  // Filter data if type is present and isPayment is true
+  const filteredData =
+    type && isPayment ? data.filter((item) => item.type === type) : data;
+
   return (
     <div className={styles.book_container}>
       <div className={styles.book_header}>
-        {data?.map((item, index) => {
+        {filteredData?.map((item, index) => {
           const isSelected = selectedIndex === index;
           return (
             <div
@@ -88,15 +99,30 @@ function BookNow({ isClick, handleCarSelect, handleProceedToPayment }) {
                   ))}
                 </div>
               </div>
-              <button
-                className={styles.bookNowButton}
-                onClick={isClick ? handleProceedToPayment : scrollToTop}
-              >
-                Book Now{" "}
-                <span className={styles.arrow}>
-                  <ArrowRightOutlined />
-                </span>
-              </button>
+              {carOptionsData && (
+                <div
+                  style={{
+                    flexDirection: "row",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p className={styles.priceTag}>Price per Unit Distance:</p>
+                  <p className={styles.bags}> ${carOptionsData[item?.type]}</p>
+                </div>
+              )}
+              {!isPayment && (
+                <button
+                  className={styles.bookNowButton}
+                  onClick={isClick ? handleProceedToPayment : scrollToTop}
+                >
+                  Book Now{" "}
+                  <span className={styles.arrow}>
+                    <ArrowRightOutlined />
+                  </span>
+                </button>
+              )}
             </div>
           );
         })}
