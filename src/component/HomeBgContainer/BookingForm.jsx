@@ -53,11 +53,11 @@ const BookingForm = () => {
     try {
       const pickupAutocomplete = new window.google.maps.places.Autocomplete(
         pickupInputRef.current.input,
-        { types: ["geocode"] }
+        { types: ["establishment"] }
       );
       const dropAutocomplete = new window.google.maps.places.Autocomplete(
         dropInputRef.current.input,
-        { types: ["geocode"] }
+        { types: ["establishment"] }
       );
 
       pickupAutocomplete.addListener("place_changed", () => {
