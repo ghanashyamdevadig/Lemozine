@@ -31,7 +31,7 @@ function CarSliderSec() {
   }, []);
 
   return (
-    <div className={styles.carSliderSec} >
+    <div className={styles.carSliderSec} id="about">
       <div className={styles.main_container}>
         <p className={styles.title_1}>About</p>
         <p className={styles.title_2} >Mass Livery</p>

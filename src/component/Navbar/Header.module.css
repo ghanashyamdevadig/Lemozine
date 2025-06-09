@@ -82,6 +82,7 @@
   text-transform: uppercase;
   color: white;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .navLink:hover {
@@ -155,6 +156,7 @@
   font-family: "Mulish", sans-serif;
   color: white;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .drawerLink:hover {
