@@ -125,7 +125,6 @@ const PaymentPage = () => {
       </div>
       <div
         style={{
-          marginTop: "100px",
           justifyContent: "center",
           display: "flex",
         }}

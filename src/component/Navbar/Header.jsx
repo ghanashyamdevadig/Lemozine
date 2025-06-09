@@ -25,6 +25,15 @@ const Header = () => {
     localStorage.removeItem("refreshToken");
     router.replace("/");
   };
+
+ const handleScroll = (id) => {
+
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    } 
+    setIsDrawerOpen(false);
+  };
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -37,15 +46,15 @@ const Header = () => {
 
           {/* Desktop Nav */}
           <nav className={styles.nav}>
-            <a href="#" className={styles.navLink}>
+            <a href="/" className={styles.navLink}>
               HOME
             </a>
-            <a href="#" className={styles.navLink}>
+            <div onClick={() => handleScroll("about")} className={styles.navLink}>
               ABOUT US
-            </a>
-            <a href="#" className={styles.navLink}>
+            </div>
+            <div onClick={() => handleScroll("contact")} className={styles.navLink}>
               CONTACTS
-            </a>
+            </div>
             {user ? (
               <div className={styles.userNav}>
                 <h4>{user.name}</h4>
@@ -81,15 +90,15 @@ const Header = () => {
             onClick={() => setIsDrawerOpen(false)}
           />
         </div>
-        <a href="#" className={styles.drawerLink}>
+        <a href="/" className={styles.drawerLink}>
           HOME
         </a>
-        <a href="#" className={styles.drawerLink}>
+        <div onClick={() => handleScroll("about")} className={styles.drawerLink}>
           ABOUT US
-        </a>
-        <a href="#" className={styles.drawerLink}>
+        </div>
+        <div onClick={() => handleScroll("contact")} className={styles.drawerLink}>
           CONTACTS
-        </a>
+        </div>
         <button
           className={styles.drawerLogin}
           onClick={() => setIsModalOpen(true)}
