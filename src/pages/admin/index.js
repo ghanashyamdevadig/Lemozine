@@ -62,7 +62,6 @@ function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
     }
   };
 
-  console.log(bookingData , "bookingData");
   
 
   // Initial auth check
