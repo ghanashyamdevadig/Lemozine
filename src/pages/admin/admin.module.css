@@ -1,5 +1,6 @@
 .admin{
-    margin: 150px 50px;
+    margin: 0px 50px;
+    padding: 120px 0px;
 }
 
 .title{
@@ -8,9 +9,13 @@
     color: #2e4053;
 }
 
+.tableContainer{
+    margin-top: 30px;
+}
+
 
 @media (max-width: 768px) {
     .admin{
-        margin: 30px 15px;
+        margin: 0px 15px;
     }
 }

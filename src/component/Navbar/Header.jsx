@@ -10,12 +10,14 @@ import LoginSignupModal from "../LoginSignUp/LoginSignupModal";
 import { clearUser } from "@/redux/store/userSlice";
 import { toggleAuthentication } from "@/redux/store/userSlice";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
+  const router = useRouter()
 
   const handleLogoutSubmit = (e) => {
     e.preventDefault();
