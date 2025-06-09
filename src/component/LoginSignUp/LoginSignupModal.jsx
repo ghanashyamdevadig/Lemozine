@@ -143,6 +143,7 @@ function LoginSignupModal({ isOpen, setIsOpen }) {
             value={formData.name}
             onChange={handleChange}
             required
+            className={styles.input}
           />
           <input
             type="email"
@@ -150,6 +151,7 @@ function LoginSignupModal({ isOpen, setIsOpen }) {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
+             className={styles.input}
             required
           />
           <input
@@ -158,6 +160,7 @@ function LoginSignupModal({ isOpen, setIsOpen }) {
             placeholder="Phone Number"
             value={formData.phone}
             onChange={handleChange}
+             className={styles.input}
             required
           />
           <input
@@ -166,6 +169,7 @@ function LoginSignupModal({ isOpen, setIsOpen }) {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
+             className={styles.input}
             required
           />
           <input
@@ -174,6 +178,7 @@ function LoginSignupModal({ isOpen, setIsOpen }) {
             placeholder="Confirm Password"
             value={formData.confirmPassword}
             onChange={handleChange}
+             className={styles.input}
             required
           />
           {error && <p className={styles.error}>{error}</p>}
@@ -195,6 +200,7 @@ function LoginSignupModal({ isOpen, setIsOpen }) {
             placeholder="Email"
             value={formDataLogin.email}
             onChange={handleChangeLogin}
+             className={styles.input}
             required
           />
           <label>Password</label>
@@ -204,6 +210,7 @@ function LoginSignupModal({ isOpen, setIsOpen }) {
             placeholder="Password"
             value={formDataLogin.password}
             onChange={handleChangeLogin}
+             className={styles.input}
             required
           />
           {errorLogin && <p className={styles.error}>{errorLogin}</p>}

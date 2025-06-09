@@ -3,7 +3,7 @@ import styles from "./Footer.module.css";
 import { Facebook, Instagram, Linkedin, Phone, ArrowUp } from "lucide-react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import logo from "../../assets/images/logo/massliveryLogo.png";
+import logo from "../../assets/images/logo/logoMass.png";
 
 export default function Footer() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

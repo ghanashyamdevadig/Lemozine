@@ -120,7 +120,8 @@ function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
     <div className={styles.admin}>
       <div className={styles.title}>Booking Details</div>
 
-      <Table
+    <div className={styles.tableContainer}>
+        <Table
         columns={columns}
         dataSource={bookingData}
         scroll={{
@@ -130,6 +131,7 @@ function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
         className="y-scroll-table"
         rowClassName="table-custom"
       />
+    </div>
 
       <Modal
         title="Admin Login"
