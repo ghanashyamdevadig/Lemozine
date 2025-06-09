@@ -1,0 +1,22 @@
+<svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_162_798)">
+<rect width="110" height="110" fill="white"/>
+<g clip-path="url(#clip1_162_798)">
+<path d="M84.9984 77.5943L72.6086 65.2437L78.9844 58.9118L82.3424 62.815L82.7815 62.5186C84.4219 57.1722 84.3857 51.8161 82.7815 46.4262L55.6594 73.4501L28.3685 46.1997C26.6798 51.8088 26.6654 57.1288 28.395 62.921L31.8519 58.7359L38.1602 65.3352L25.9537 77.3823C16.0341 66.0581 13.6507 43.3157 29.0295 27.9894C44.0126 13.0511 66.9564 14.0679 80.6369 26.7486C79.5779 27.816 78.5092 28.8761 77.4598 29.9531C76.4104 31.0301 75.4069 32.0951 74.3937 33.1576C60.2332 20.9299 41.0237 25.8836 32.5177 37.9042L55.4905 60.4104L84.7138 31.2566C94.6985 42.3712 96.6694 63.4439 84.9984 77.5943Z" fill="#D7B65C"/>
+<path d="M80.5193 82.3516C66.0983 95.8443 43.0676 94.5746 30.5957 82.3348L36.8051 76.1137C49.2818 85.2903 61.7794 85.2759 74.2979 76.0703L80.5193 82.3516Z" fill="#D7B65C"/>
+</g>
+<line y1="16.75" x2="110" y2="16.75" stroke="#222222" stroke-opacity="0.3" stroke-width="0.5" stroke-linejoin="round" stroke-dasharray="2 2"/>
+<line y1="91.75" x2="110" y2="91.75" stroke="#222222" stroke-opacity="0.3" stroke-width="0.5" stroke-linejoin="round" stroke-dasharray="2 2"/>
+<line x1="18.25" y1="1.09278e-08" x2="18.25" y2="110" stroke="#222222" stroke-opacity="0.3" stroke-width="0.5" stroke-linejoin="round" stroke-dasharray="2 2"/>
+<line x1="93.25" y1="1.09278e-08" x2="93.25" y2="110" stroke="#222222" stroke-opacity="0.3" stroke-width="0.5" stroke-linejoin="round" stroke-dasharray="2 2"/>
+</g>
+<rect x="0.25" y="0.25" width="109.5" height="109.5" stroke="black" stroke-opacity="0.3" stroke-width="0.5"/>
+<defs>
+<clipPath id="clip0_162_798">
+<rect width="110" height="110" fill="white"/>
+</clipPath>
+<clipPath id="clip1_162_798">
+<rect width="75" height="75" fill="white" transform="translate(18 17)"/>
+</clipPath>
+</defs>
+</svg>

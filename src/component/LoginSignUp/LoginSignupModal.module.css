@@ -47,6 +47,13 @@
   border-radius: 5px;
 }
 
+.input{
+  color: #000;
+   padding: 10px;
+  font-size: 16px;
+  background-color: #fff;
+}
+
 .form label {
   color: #344054;
   font-weight: bold;

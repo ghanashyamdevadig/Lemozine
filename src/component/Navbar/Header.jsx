@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styles from "./Header.module.css";
 import Image from "next/image";
-import logo from "../../assets/images/logo/massliveryLogo.png";
+import logo from "../../assets/images/logo/logoMass.png";
 import { LogoutOutlined } from "@ant-design/icons";
 import { Menu, X } from "lucide-react"; // Menu and Close icons
 import { useSelector } from "react-redux";
