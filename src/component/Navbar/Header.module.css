@@ -35,6 +35,7 @@
 .logoContainer {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .logoTextTop {
@@ -103,9 +104,17 @@
   font-family: "Taviraj", serif;
 }
 
+.name_first_letter{
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #facc15;
+  margin-right: 20px;
+}
+
 /* Mobile menu icon (hamburger) */
 .menuIcon {
-  display: block;
+  display: flex;
+  align-items: center;
   cursor: pointer;
 }
 

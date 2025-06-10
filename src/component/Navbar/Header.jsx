@@ -17,7 +17,7 @@ const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
 
   const handleLogoutSubmit = (e) => {
     e.preventDefault();
@@ -25,15 +25,15 @@ const Header = () => {
     dispatch(toggleAuthentication(false));
     localStorage.removeItem("authToken");
     localStorage.removeItem("refreshToken");
+    setIsDrawerOpen(false);
     router.replace("/");
   };
 
- const handleScroll = (id) => {
-
+  const handleScroll = (id) => {
     const section = document.getElementById(id);
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
-    } 
+    }
     setIsDrawerOpen(false);
   };
   return (
@@ -41,7 +41,10 @@ const Header = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.logo}>
-            <div className={styles.logoContainer}>
+            <div
+              className={styles.logoContainer}
+              onClick={() => router.push("/")}
+            >
               <Image src={logo} height={50} width={180} priority alt="logo" />
             </div>
           </div>
@@ -51,10 +54,16 @@ const Header = () => {
             <a href="/" className={styles.navLink}>
               HOME
             </a>
-            <div onClick={() => handleScroll("about")} className={styles.navLink}>
+            <div
+              onClick={() => handleScroll("about")}
+              className={styles.navLink}
+            >
               ABOUT US
             </div>
-            <div onClick={() => handleScroll("contact")} className={styles.navLink}>
+            <div
+              onClick={() => handleScroll("contact")}
+              className={styles.navLink}
+            >
               CONTACTS
             </div>
             {user ? (
@@ -79,6 +88,12 @@ const Header = () => {
             className={styles.menuIcon}
             onClick={() => setIsDrawerOpen(true)}
           >
+            {" "}
+            {user && (
+              <div className={styles.userNav}>
+                <h4 className={styles.name_first_letter}>{user.name.slice(0, 1).toUpperCase()}</h4>
+              </div>
+            )}
             <Menu size={28} color="#fff" />
           </div>
         </div>
@@ -95,18 +110,33 @@ const Header = () => {
         <a href="/" className={styles.drawerLink}>
           HOME
         </a>
-        <div onClick={() => handleScroll("about")} className={styles.drawerLink}>
+        <div
+          onClick={() => handleScroll("about")}
+          className={styles.drawerLink}
+        >
           ABOUT US
         </div>
-        <div onClick={() => handleScroll("contact")} className={styles.drawerLink}>
+        <div
+          onClick={() => handleScroll("contact")}
+          className={styles.drawerLink}
+        >
           CONTACTS
         </div>
-        <button
-          className={styles.drawerLogin}
-          onClick={() => setIsModalOpen(true)}
-        >
-          Login
-        </button>
+        {user ? (
+          <button onClick={handleLogoutSubmit} className={styles.drawerLogin}>
+            Logout
+          </button>
+        ) : (
+          <button
+            className={styles.drawerLogin}
+            onClick={() => {
+              setIsModalOpen(true);
+              setIsDrawerOpen(false);
+            }}
+          >
+            Login
+          </button>
+        )}
       </div>
       <LoginSignupModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </header>
