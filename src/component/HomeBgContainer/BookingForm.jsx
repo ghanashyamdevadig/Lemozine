@@ -46,18 +46,17 @@ const BookingForm = () => {
   }, []);
 
   // Initialize Google Places Autocomplete
-  useEffect(() => {
+useEffect(() => {
     if (!isGoogleLoaded || !pickupInputRef.current || !dropInputRef.current)
       return;
 
     try {
+      // Remove the types option to allow all places (addresses, businesses, etc)
       const pickupAutocomplete = new window.google.maps.places.Autocomplete(
-        pickupInputRef.current.input,
-        { types: ["establishment"] }
+        pickupInputRef.current.input
       );
       const dropAutocomplete = new window.google.maps.places.Autocomplete(
-        dropInputRef.current.input,
-        { types: ["establishment"] }
+        dropInputRef.current.input
       );
 
       pickupAutocomplete.addListener("place_changed", () => {
