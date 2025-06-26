@@ -100,7 +100,6 @@ useEffect(() => {
           unitSystem: window.google.maps.UnitSystem.METRIC,
         },
         async (response, status) => {
-          console.log(response, status, "response for distance");
           console.log(response?.rows[0]?.elements[0]?.distance?.text);
           let km =
             removeText(response?.rows[0]?.elements[0]?.distance?.text) ?? 0;
@@ -112,8 +111,6 @@ useEffect(() => {
             to_location: dropLocation,
             km,
           };
-
-          console.log(res?.data, searchResult, "test location");
 
           dispatch(setBookingDetails(searchResult));
 

@@ -15,7 +15,8 @@ const endpoints = {
     create_checkout_session:'/create-checkout-session'
   },
   generic:{
-    staticLoadData:'/staticLoadData'
+    staticLoadData:'/staticLoadData',
+    feedback:'/feedback'
   }
 };
 
