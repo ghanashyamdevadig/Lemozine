@@ -11,11 +11,12 @@ const apiService = {
     getById: (userId) => apiClient.get(endpoints.users.details(userId)),
     getCarDetails: (distance) =>
       apiClient.get(endpoints.users.calculateprice(distance)),
+    giveFeedback: (data) =>
+      apiClient.post(endpoints.generic.feedback, data),
   },
   bookings: {
     booking: (data) => apiClient.post(endpoints.bookings.booking, data),
     adminbokings: () => apiClient.get(endpoints.bookings.admin_bookings),
-    // checkoutSession:(data) => apiClient.post(endpoints.bookings.create_checkout_session(data)),
     checkoutSession: (data) =>
       apiClient.post(endpoints.bookings.create_checkout_session, data),
   },
