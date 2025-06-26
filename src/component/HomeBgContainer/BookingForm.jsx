@@ -46,17 +46,30 @@ const BookingForm = () => {
   }, []);
 
   // Initialize Google Places Autocomplete
-useEffect(() => {
+  useEffect(() => {
     if (!isGoogleLoaded || !pickupInputRef.current || !dropInputRef.current)
       return;
 
     try {
-      // Remove the types option to allow all places (addresses, businesses, etc)
+      // Define bounds for the East Coast (approximate)
+      const eastCoastBounds = new window.google.maps.LatLngBounds(
+        { lat: 24.396308, lng: -81.762909 }, // Key West, FL (SW)
+        { lat: 45.01585, lng: -66.93457 }    // Northern Maine (NE)
+      );
+
+      const options = {
+        bounds: eastCoastBounds,
+        componentRestrictions: { country: "us" },
+        strictBounds: false, // Set to true to force results inside bounds only
+      };
+
       const pickupAutocomplete = new window.google.maps.places.Autocomplete(
-        pickupInputRef.current.input
+        pickupInputRef.current.input,
+        options
       );
       const dropAutocomplete = new window.google.maps.places.Autocomplete(
-        dropInputRef.current.input
+        dropInputRef.current.input,
+        options
       );
 
       pickupAutocomplete.addListener("place_changed", () => {
@@ -119,7 +132,6 @@ useEffect(() => {
 
           if (res?.status == 200) {
             console.log("Checked Data");
-           
 
             dispatch(setCarPrices(res?.data));
             dispatch(togglePageLoader(false));
@@ -133,7 +145,7 @@ useEffect(() => {
     });
   };
 
-const handleBookNow = async () => {
+  const handleBookNow = async () => {
     // Validation
     if (!pickupLocation || !pickupPlaceId) {
       ToastService?.showError(
@@ -154,11 +166,8 @@ const handleBookNow = async () => {
 
     dispatch(togglePageLoader(true));
 
-      await calculateDistance(pickupPlaceId, dropPlaceId);
-
-
-   
-};
+    await calculateDistance(pickupPlaceId, dropPlaceId);
+  };
 
   return (
     <div className={styles.bookingForm}>
