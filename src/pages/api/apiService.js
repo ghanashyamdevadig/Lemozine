@@ -11,8 +11,8 @@ const apiService = {
     getById: (userId) => apiClient.get(endpoints.users.details(userId)),
     getCarDetails: (distance) =>
       apiClient.get(endpoints.users.calculateprice(distance)),
-    giveFeedback: (data) =>
-      apiClient.post(endpoints.generic.feedback, data),
+    giveFeedback: (data) => apiClient.post(endpoints.generic.feedback, data),
+    getFeedback: () => apiClient.get(endpoints.generic.admin_feedback),
   },
   bookings: {
     booking: (data) => apiClient.post(endpoints.bookings.booking, data),

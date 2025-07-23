@@ -32,12 +32,25 @@ const columns = [
   },
 ];
 
+const columns2 = [
+  {
+    title: "Email",
+    dataIndex: "email",
+    width: "300px",
+  },
+  {
+    title: "Feedback",
+    dataIndex: "feedback",
+  },
+];
+
 function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [bookingData, setBookingData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState([]);
 
   // Login function
   const login = async (formDataLogin) => {
@@ -62,7 +75,16 @@ function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
     }
   };
 
-  
+  const getFeedback = async () => {
+    try {
+      const res = await apiService.users.getFeedback();
+      if (res?.data) {
+        setFeedback(res?.data?.feedback);
+      }
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+    }
+  };
 
   // Initial auth check
   useEffect(() => {
@@ -77,8 +99,11 @@ function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
   useEffect(() => {
     if (isAuthenticated) {
       getBookingList();
+      getFeedback();
     }
   }, [isAuthenticated]);
+
+  console.log(feedback, "feedback");
 
   const handleLogout = () => {
     setIsAuthenticated(false);
@@ -120,18 +145,31 @@ function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
     <div className={styles.admin}>
       <div className={styles.title}>Booking Details</div>
 
-    <div className={styles.tableContainer}>
+      <div className={styles.tableContainer}>
         <Table
-        columns={columns}
-        dataSource={bookingData}
-        scroll={{
-          x: scrollable && scrollLimit ? scrollLimit : 900,
-          y: scrollY,
-        }}
-        className="y-scroll-table"
-        rowClassName="table-custom"
-      />
-    </div>
+          columns={columns}
+          dataSource={bookingData}
+          scroll={{
+            x: scrollable && scrollLimit ? scrollLimit : 900,
+            y: scrollY,
+          }}
+          className="y-scroll-table"
+          rowClassName="table-custom"
+        />
+      </div>
+
+      <div>
+        <Table
+          columns={columns2}
+          dataSource={feedback}
+          scroll={{
+            x: scrollable && scrollLimit ? scrollLimit : 900,
+            y: scrollY,
+          }}
+          className="y-scroll-table"
+          rowClassName="table-custom"
+        />
+      </div>
 
       <Modal
         title="Admin Login"
@@ -145,13 +183,17 @@ function Admin({ scrollLimit = null, scrollY = null, scrollable }) {
         <Input
           placeholder="Enter Email"
           value={loginForm.email}
-          onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+          onChange={(e) =>
+            setLoginForm({ ...loginForm, email: e.target.value })
+          }
           style={{ marginBottom: "1rem" }}
         />
         <Input.Password
           placeholder="Enter Password"
           value={loginForm.password}
-          onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+          onChange={(e) =>
+            setLoginForm({ ...loginForm, password: e.target.value })
+          }
         />
       </Modal>
     </div>
